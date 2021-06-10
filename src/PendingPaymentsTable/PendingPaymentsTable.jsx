@@ -56,10 +56,8 @@ const PendingPaymentsTable = props => {
             try {
                 let res = await service.getAllBFAs()
                 let pendingBFAs = res.data.filter(x => x.paid !== true)
-                console.log(pendingBFAs)
 
                 setBrokerFees(pendingBFAs);
-                // setAllBrokerFees(pendingBFAs);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -172,24 +170,23 @@ const PendingPaymentsTable = props => {
                     <Table aria-label="customized table" stlye={{ 'min-width': '400px' }} stickyHeader>
                         <TableHead>
                             <TableRow>
-                                <TableCell style={{ 'width': '20%', 'background-color': 'grey' }} align="center"><b>Carrier</b></TableCell>
-                                <TableCell style={{ 'width': '10%', 'background-color': 'grey' }} align="center"><b>Order ID</b></TableCell>
-                                <TableCell style={{ 'width': '15%', 'background-color': 'grey' }} align="center"><b>Vehicle Info</b></TableCell>
-                                <TableCell style={{ 'width': '15%', 'background-color': 'grey' }} align="center"><b>Delivery Date</b></TableCell>
-                                <TableCell style={{ 'width': '10%', 'background-color': 'grey' }} align="center"><b>Receivable</b></TableCell>
-                                <TableCell style={{ 'width': '30%', 'background-color': 'grey' }} align="center"><b>Notes</b></TableCell>
+                                <TableCell style={{ 'width': '20%', 'backgroundColor': 'grey' }} align="center"><b>Carrier</b></TableCell>
+                                <TableCell style={{ 'width': '10%', 'backgroundColor': 'grey' }} align="center"><b>Order ID</b></TableCell>
+                                <TableCell style={{ 'width': '15%', 'backgroundColor': 'grey' }} align="center"><b>Vehicle Info</b></TableCell>
+                                <TableCell style={{ 'width': '15%', 'backgroundColor': 'grey' }} align="center"><b>Delivery Date</b></TableCell>
+                                <TableCell style={{ 'width': '10%', 'backgroundColor': 'grey' }} align="center"><b>Receivable</b></TableCell>
+                                <TableCell style={{ 'width': '30%', 'backgroundColor': 'grey' }} align="center"><b>Notes</b></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {(rowsPerPage > 0 ? brokerFees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : brokerFees).map(row => (
                                 <TableRow key={row._id} hover onClick={() => history.push(`bfview/${row._id}`)}>
-                                    {console.log(row, 'this is the row')}
                                     <TableCell component="th" scope="row">
                                         <Grid container >
                                             <Grid item xs={12}>
                                                 {row.carrier.name} - {row.buyerNum}
                                             </Grid>
-                                            <Divider orientation="vertical" style={{ 'padding': '.5%', 'background-color': 'blue', 'margin': '.3%' }} fullWidth flexItem />
+                                            <Divider orientation="vertical" style={{ 'padding': '.5%', 'backgroundColor': 'blue', 'margin': '.3%' }} fullWidth flexItem />
 
                                             <Grid item>
                                                 {row.carrier.contact} {row.carrier.phoneNumber}

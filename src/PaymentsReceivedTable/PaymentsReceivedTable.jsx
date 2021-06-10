@@ -36,7 +36,7 @@ const PaymentsReceivedTable = props => {
     const [paidBrokerFees, setPaidBrokerFees] = useState([])
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
 
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, paidBrokerFees.length - page * rowsPerPage);
@@ -83,7 +83,7 @@ const PaymentsReceivedTable = props => {
 
         },
         title: {
-            padding: '3%'
+            padding: '.5%'
         },
         table: {
             // position: 'relative', left: '0%', top: '0%',

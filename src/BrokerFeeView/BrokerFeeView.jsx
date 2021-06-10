@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { matchPath } from "react-router";
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
@@ -170,7 +169,6 @@ const BrokerFeeView = (props) => {
     const findBrokerFee = async (selectedId) => {
         try {
             let res = await service.fetchBrokerFee(selectedId);
-            console.log(res, 'fetched')
             setBrokerObj(res.data);
             setSelectedDate(res.data.deliveryDate)
         } catch (err) {
@@ -186,22 +184,17 @@ const BrokerFeeView = (props) => {
             enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
             fetchCarriers()
             setOpen(false)
-
-
-            console.log(res, 'carrier response')
         } catch (err) {
             console.error(err);
             enqueueSnackbar('Failed to Add Carrier', { variant: 'error' })
 
         }
     }
-    console.log(carrierObj, 'carrier obj')
     const handleUpdate = async () => {
         let id = match.params.id;
         let updatedVehInfo = {
             vehYear, vehMake, vehModel
         }
-        console.log(updatedVehInfo, 'updated veh info')
         let updatedBrokerFee = {
             ...brokerObj, 'userName': userName,
         }
@@ -211,7 +204,6 @@ const BrokerFeeView = (props) => {
 
         setLoading(true)
         try {
-            console.log(updatedBrokerFee, 'updated broker fee')
             let res = await service.updateBFA(id, updatedBrokerFee);
             if (res.status === 200) {
                 setBrokerObj(res.data)
@@ -229,7 +221,6 @@ const BrokerFeeView = (props) => {
         }
     }
 
-    console.log(match, 'match ob')
 
     const handleClickOpen = () => {
         setOpen(true);

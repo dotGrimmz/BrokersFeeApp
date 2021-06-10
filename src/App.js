@@ -18,6 +18,7 @@ const CreateBrokerFee = lazy(() => import('./CreateBrokerFee/CreateBrokerFee.jsx
 const BrokerFeeView = lazy(() => import('./BrokerFeeView/BrokerFeeView.jsx'));
 const PendingPaymentsTable = lazy(() => import('./PendingPaymentsTable/PendingPaymentsTable.jsx'));
 const PaymentsRecievedTable = lazy(() => import('./PaymentsReceivedTable/PaymentsReceivedTable.jsx'));
+const AdminView = lazy(() => import('./AdminView/AdminView.jsx'));
 
 
 
@@ -41,6 +42,7 @@ function App() {
                   <Route path='/create' component={CreateBrokerFee} />
                   <Route path='/pending' component={PendingPaymentsTable} />
                   <Route path='/paid' component={PaymentsRecievedTable} />
+                  <Route path='/admin' component={AdminView} />
 
                 </Switch>
               </Layout>

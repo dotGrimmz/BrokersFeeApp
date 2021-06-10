@@ -71,7 +71,6 @@ const Layout = (props) => {
             height: '100vh'
         }
     }
-    console.log(toggleDrawer, 'toggle');
 
     const handleLogOut = () => {
         history.push('/login')
@@ -79,7 +78,6 @@ const Layout = (props) => {
 
     }
 
-    // route isnt loading the correct component
 
     const menuLinks = [{
         label: 'Add Broker Fee',
@@ -135,7 +133,7 @@ const Layout = (props) => {
                             }
                         </List> : <List style={{ 'width': '225px' }}>
                             {['Login'].map((text) => (
-                                <ListItem button key={text} >
+                                <ListItem button key={text} onClick={() => history.push('/login')} >
                                     <ListItemIcon>
                                         <SupervisorAccountOutlinedIcon />
                                     </ListItemIcon>

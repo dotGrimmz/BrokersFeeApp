@@ -31,16 +31,23 @@ const CreateBrokerFee = () => {
     const context = useContext(AAMContext);
     const { userName, years } = context;
     const history = useHistory();
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
+    const [openCarrier, setOpenCarrier] = useState(false)
     const [vehYear, setVehYear] = useState("");
     const [vehMake, setVehMake] = useState("");
     const [vehModel, setVehModel] = useState("");
     const [vehicleModels, setVehicleModels] = useState([]);
     const [vehicleMakes, setVehicleMakes] = useState([]);
+    const [carrierObj, setCarrierObj] = useState({
+        name: '',
+        address: '',
+        contact: '',
+        phoneNumber: '',
+    })
     const [brokerObj, setBrokerObj] = useState({
         orderId: '',
         carrier: {
@@ -70,7 +77,6 @@ const CreateBrokerFee = () => {
         const fetchCarriers = async () => {
             try {
                 let res = await service.getCarriers();
-                console.log(res, 'res obj')
                 if (res.status === 200) setCarrierList(res.data);
             } catch (err) {
                 console.error('could not fetch carriers');
@@ -150,24 +156,16 @@ const CreateBrokerFee = () => {
         setSelectedDate(date);
     };
 
-    const handleYearChange = (event) => {
-        setVehYear(event.target.value);
-        setVehicleMakes([]);
-        setVehicleModels([]);
-        setVehMake("");
-        setVehModel("");
-    };
+
 
     const handleSubmit = async () => {
         setLoading(true)
-        console.log(brokerObj, 'obj in the submit')
         let completedBrokerFee = {
             ...brokerObj, "deliveryDate": selectedDate, 'userName': userName, 'paid': false,
             paidTo: '', vehInfo: {
                 vehYear, vehMake, vehModel
             }
         }
-        console.log(completedBrokerFee, 'completed brokers fee')
         try {
 
             await service.postFee(completedBrokerFee);
@@ -181,6 +179,48 @@ const CreateBrokerFee = () => {
             setLoading(false)
 
         }
+    }
+
+    const handleClickOpen = () => {
+        setOpenCarrier(true);
+    };
+
+
+    const addCarrier = async () => {
+
+        try {
+            let res = await service.createCarrier(carrierObj)
+            enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
+            fetchCarriers()
+            setOpenCarrier(false)
+        } catch (err) {
+            console.error(err);
+            enqueueSnackbar('Failed to Add Carrier', { variant: 'error' })
+
+        }
+    }
+
+    const handleDeleteCarrier = async (id) => {
+        try {
+            await service.deleteCarrier(id)
+            enqueueSnackbar('Successfully Deleted Broker', { variant: 'success' });
+            fetchCarriers()
+
+        } catch (err) {
+            console.error(err);
+            enqueueSnackbar('Failed to  Deleted Broker', { variant: 'error' });
+
+        }
+    }
+
+    const fetchCarriers = async () => {
+        try {
+            let res = await service.getCarriers();
+            if (res.status === 200) setCarrierList(res.data);
+        } catch (err) {
+            console.error('could not fetch carriers');
+        }
+
     }
 
 
@@ -385,15 +425,24 @@ const CreateBrokerFee = () => {
                                 />
                             </Grid>
 
-                            <Button disabled={loading} variant='contained' color='primary' onClick={() => handleSubmit()} style={{ 'margin': '2%' }}>
-                                Add Fee
+                            <Grid item xs={2}>
+                                <Button variant='contained' color='primary' style={{ 'margin': '2%' }} onClick={handleClickOpen}>
+                                    Add Carrier
+                                    </Button>
+                                <CarrierModal open={openCarrier} setOpen={setOpenCarrier} carrierObj={carrierObj} setCarrierObj={setCarrierObj} addCarrier={addCarrier} handleDeleteCarrier={handleDeleteCarrier} id={carrierObj._id} />
+
+                            </Grid>
+                            <Grid item xs={10} align='center' style={{ 'paddingRight': '15%' }}>
+                                <Button disabled={loading} variant='contained' color='primary' onClick={() => handleSubmit()} style={{ 'margin': '2%' }}>
+                                    Add Fee
                             </Button>
+                            </Grid>
+
 
                         </Grid>
                     </FormControl>
                 </Card>
             </Grid>
-
         </Grid >
     )
 }

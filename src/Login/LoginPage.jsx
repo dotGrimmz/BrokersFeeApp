@@ -51,7 +51,7 @@ const LoginPage = props => {
     const service = new ApexAutoMoversService();
     const history = useHistory();
     const context = useContext(AAMContext);
-    const { setUser, getUser } = context;
+    const { setUser, createTableData } = context;
 
     const [credentials, setCredentials] = useState({
         userName: '',
@@ -69,7 +69,10 @@ const LoginPage = props => {
         try {
             setLoading(true)
 
-            let res = await service.fetchLogin(credentials)
+            let res = await service.fetchLogin(credentials);
+
+
+
             if (res.data.login !== false) {
                 setUser(res.data.userName)
 
