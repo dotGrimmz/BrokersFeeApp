@@ -26,7 +26,7 @@ const Layout = (props) => {
 
     const drawerWidth = '240px';
     const context = useContext(AAMContext);
-    const { userName, logoutUser } = context;
+    const { loggedInUser, logoutUser } = context;
     const history = useHistory();
 
     const { children } = props;
@@ -97,7 +97,7 @@ const Layout = (props) => {
         routeTo: () => history.push('/admin')
     }]
 
-
+    console.log(loggedInUser, 'layou page')
     return (
 
         <div style={styles.root}>
@@ -107,7 +107,7 @@ const Layout = (props) => {
                     <Typography variant="h6" style={styles.title}>
                         AAM Brokers Fee Application
                         </Typography>
-                    {userName ? <Button onClick={() => handleLogOut()} color="inherit"> Log Out</Button> : null}
+                    {loggedInUser?.userName !== '' ? <Button onClick={() => handleLogOut()} color="inherit"> Log Out</Button> : null}
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -121,7 +121,7 @@ const Layout = (props) => {
                 <Toolbar />
                 <div style={styles.drawerContainer} >
 
-                    {userName !== '' ?
+                    {loggedInUser?.userName !== '' ?
                         < List >
                             {
                                 menuLinks.map((menuLink) => (

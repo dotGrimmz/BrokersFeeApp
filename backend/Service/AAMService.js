@@ -51,6 +51,8 @@ class AAMService {
             .catch((err) => { res.status(400).json('Error' + err) })
     }
 
+
+
     getAllBrokerFees(req, res) {
         BrokerDomain.find()
             .then(brokerfees => {
@@ -61,6 +63,10 @@ class AAMService {
             })
             .catch((err) => res.status(400).json("Error: " + err));
     }
+
+
+
+
 
     updateBrokerFee(req, res) {
         const id = req.params.id;
@@ -128,6 +134,75 @@ class AAMService {
                 res.status(200).json('Deleted carrier with id' + id)
             }
         })
+    }
+
+    createUser(req, res) {
+        const { userName } = req.body;
+        const newUser = new UserDomain(req.body);
+        UserDomain.find({ 'userName': userName }, (err, user) => {
+            if (user.length > 0) {
+                res.status(400).json(`User with ${userName} Already EXISTS or  ${err}`);
+            } else {
+                newUser
+                    .save()
+                    .then(data => res.json(data))
+                    .catch(err => { res.status(400).json('Error:' + err) })
+            }
+        })
+            .catch((err) => res.status(400).json(`failed to create new user: ${err}`));
+    }
+
+
+    deleteUser(req, res) {
+        const id = req.params.id;
+        UserDomain.findByIdAndDelete(id, {}, (err, doc) => {
+            console.log(doc, 'what is doc')
+            if (err) {
+                res.status(400).json(err)
+            } else {
+                console.log(doc, ' this is the found obj')
+
+                res.status(200).json(doc);
+            }
+        })
+
+    }
+
+    updateUser(req, res) {
+        const id = req.params.id;
+        const { userName, password } = req.body;
+        UserDomain.findByIdAndUpdate(id, req.body, { new: true }, (err, user) => {
+            if (!err) {
+                user.userName = userName
+                user.password = password
+                user.save((err, user) => {
+                    if (!err) {
+                        res.send(user)
+                    } else {
+                        res.status(400).json('Error: User was not updated:' + err)
+                    }
+                })
+            }
+            else {
+                res.status(400).json("Error: User did not update" + err)
+            }
+        })
+            .catch((err) =>
+                res.status(400).json("Error: Broker fee did not update" + err)
+            );
+    }
+
+
+    getAllUsers(req, res) {
+        UserDomain.find({}, (err, users) => {
+            if (!err) {
+                res.send(users);
+            } else {
+                res.status(400).json('Error' + err)
+
+            }
+        })
+            .catch(err => res.sendStatus(400).json("unable to fetch users" + err))
     }
 
 }

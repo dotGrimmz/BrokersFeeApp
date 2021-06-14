@@ -51,11 +51,10 @@ const LoginPage = props => {
     const service = new ApexAutoMoversService();
     const history = useHistory();
     const context = useContext(AAMContext);
-    const { setUser, createTableData } = context;
+    const { setLoggedInUser, createTableData } = context;
 
     const [credentials, setCredentials] = useState({
-        userName: '',
-        password: ''
+
     });
 
     const [loading, setLoading] = useState(false);
@@ -74,7 +73,7 @@ const LoginPage = props => {
 
 
             if (res.data.login !== false) {
-                setUser(res.data.userName)
+                setLoggedInUser(res.data)
 
                 history.push('/pending');
             }

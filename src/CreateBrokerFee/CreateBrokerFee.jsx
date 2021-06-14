@@ -29,7 +29,7 @@ import { useSnackbar } from 'notistack';
 const CreateBrokerFee = () => {
     const service = new ApexAutoMoversService();
     const context = useContext(AAMContext);
-    const { userName, years } = context;
+    const { loggedInUser, years } = context;
     const history = useHistory();
     const { enqueueSnackbar } = useSnackbar();
 
@@ -161,7 +161,7 @@ const CreateBrokerFee = () => {
     const handleSubmit = async () => {
         setLoading(true)
         let completedBrokerFee = {
-            ...brokerObj, "deliveryDate": selectedDate, 'userName': userName, 'paid': false,
+            ...brokerObj, "deliveryDate": selectedDate, 'userName': loggedInUser.userName, 'paid': false,
             paidTo: '', vehInfo: {
                 vehYear, vehMake, vehModel
             }

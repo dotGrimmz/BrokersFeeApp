@@ -8,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 
 const AdminPanel = props => {
-    const { yearlyRevenue, paymentAmtDue, rollingThreeMonthRevenue, userName } = props;
+    const { yearlyRevenue, paymentAmtDue, rollingThreeMonthRevenue, userName, setMode, showEmployeePanel } = props;
 
 
     const styles = {
@@ -71,17 +71,17 @@ const AdminPanel = props => {
                 </Grid>
                 <Grid container spacing={2} >
                     <Grid item xs={6}>
-                        <Button color='primary' variant='contained'>
+                        <Button color='primary' variant='contained' onClick={() => setMode('add')} >
                             Add User
                         </Button>
                     </Grid >
                     <Grid item xs={6}>
-                        <Button color='primary' variant='contained'>
-                            Delete User
+                        <Button color='primary' variant='contained' onClick={() => showEmployeePanel()}>
+                            Employees
                         </Button>
                     </Grid >
                     <Grid item xs={12}>
-                        <Button color='primary' variant='contained'>
+                        <Button color='primary' variant='contained' onClick={() => setMode('password')}>
                             Change Profile Credentials
                         </Button>
                     </Grid >

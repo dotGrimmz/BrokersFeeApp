@@ -10,24 +10,20 @@ class ContextImplementation extends Component {
     tableData = {}
 
 
-    getLoggedInUser() {
-        return this.state.loggedIn
-    }
 
-    setUser = (userName) => {
-        this.setState({ 'userName': userName })
-    }
 
-    getUser = () => {
-        return this.state.userName
-    }
+
 
     setAllBrokerFees = (data) => {
         this.setState({ brokerFees: data })
     }
 
     logoutUser = () => {
-        this.setState({ 'userName': '' });
+        this.setState({
+            loggedInUser: {
+                userName: ''
+            }
+        });
     }
 
     createTableData = (data) => {
@@ -57,16 +53,21 @@ class ContextImplementation extends Component {
 
     }
 
-
+    setLoggedInUser = (user) => {
+        this.setState({ loggedInUser: user })
+    }
 
 
     state = {
-        userName: '',
+        loggedInUser: {
+            userName: '',
+            createdAt: ''
+
+        },
         thisYear: new Date().getFullYear(),
         thisMonth: new Date().getMonth(),
-        getUser: this.getUser,
-        setUser: this.setUser,
         logoutUser: this.logoutUser,
+        setLoggedInUser: this.setLoggedInUser,
         setAllBrokerFees: this.setAllBrokerFees,
         createTableData: this.createTableData,
         clearTableData: this.clearTableData,

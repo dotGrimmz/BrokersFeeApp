@@ -6,6 +6,9 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import UserPanel from '../UserPanel/UserPanel';
+import { useSnackbar } from 'notistack';
+
 
 
 import {
@@ -26,11 +29,19 @@ const AdminView = props => {
     const service = new ApexAutoMoversService();
     const [yearlyRevenue, setYearlyRevenue] = useState('');
     const [paymentAmountDue, setPaymentAmtDue] = useState('');
-    const [rollingThreeMonthRevenue, setRollingThreeMonthRevenue] = useState('')
+    const [rollingThreeMonthRevenue, setRollingThreeMonthRevenue] = useState('');
+    const [savedUser, setSavedUser] = useState({})
+    const [user, setUser] = useState({
+        userName: '',
+        password: ''
+    });
+    const [mode, setMode] = useState('password');
+    const [userProfiles, setUserProfiles] = useState([]);
     const context = useContext(AAMContext);
-    const { userName, thisMonth, thisYear, createTableData, clearTableData } = context;
+    const { thisMonth, thisYear, createTableData, clearTableData, loggedInUser } = context;
     const [tableData, setTableData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { enqueueSnackbar } = useSnackbar();
 
 
     useEffect(() => {
@@ -58,6 +69,27 @@ const AdminView = props => {
         return clearTableData()
 
     }, []);
+
+    useEffect(() => {
+        const fetchUserProfiles = async () => {
+            try {
+                let res = await service.getAllUserProfiles()
+                if (res.status === 200) {
+                    console.log(res.data, 'this is it')
+                    let filtered = res.data.filter(x => loggedInUser.userName !== x.userName)
+                    setUserProfiles(filtered)
+                }
+                console.log(res, 'res.data')
+            } catch (err) {
+                enqueueSnackbar('Unable to fetch user profiles', { variant: "error" })
+                console.error(err)
+            }
+        }
+        fetchUserProfiles()
+
+    }, [])
+
+
     const getTotalDue = (data) => {
         let arr = []
         data.map((x) => {
@@ -91,6 +123,89 @@ const AdminView = props => {
 
     }
 
+    const handleValueChange = e => {
+        let obj = { ...user, [e.target.name]: e.target.value }
+        setUser(obj);
+    }
+
+    const handleAddNewUser = async () => {
+        let clear = { userName: '', password: '' }
+        try {
+            let res = await service.createNewUser(user)
+            console.log(res, 'res')
+            if (res.status === 200) {
+                enqueueSnackbar('Successfully Created New User', { variant: 'success' });
+                console.log(res.data)
+                setSavedUser(res.data)
+            }
+        } catch (err) {
+            enqueueSnackbar('Unable to Create New User', { variant: 'error' })
+
+            console.error(err)
+        } finally {
+            setUser(clear);
+
+        }
+    };
+
+    const fetchUserProfiles = async () => {
+        try {
+            let res = await service.getAllUserProfiles()
+            if (res.status === 200) {
+                console.log(res.data, 'this is it')
+                let filtered = res.data.filter(x => loggedInUser.userName !== x.userName)
+                setUserProfiles(filtered)
+            }
+            console.log(res, 'res.data')
+        } catch (err) {
+            enqueueSnackbar('Unable to fetch user profiles', { variant: "error" })
+            console.error(err)
+        }
+    }
+
+    const handleGeneratePassword = () => {
+        let date = new Date().getTime()
+        setUser({ password: `apex_${date}` });
+
+    }
+
+    const handleDeleteUser = async (id) => {
+        try {
+            let res = await service.deleteUserProfile(id);
+            if (res.status === 200) {
+                enqueueSnackbar('Successfully Deleted User', { variant: 'success' });
+                fetchUserProfiles()
+            }
+        } catch (err) {
+            enqueueSnackbar('Unable to Delete User', { variant: 'error' });
+
+            console.error(err)
+        } finally {
+        }
+    }
+
+
+    const showEmployeePanel = () => {
+        setMode('employee');
+        fetchUserProfiles()
+    };
+
+    const handleUpdateCredentials = async (credentials) => {
+        try {
+            let res = await service.updateUserProfile(loggedInUser._id, credentials)
+
+            if (res.status === 200) enqueueSnackbar('Successfully Updated Profile', { variant: 'success' });
+
+            console.log(res, 'res from update')
+        } catch (err) {
+            console.error(err)
+            enqueueSnackbar('Unable to Update Profile', { variant: 'error' });
+
+        }
+    }
+
+
+
     const styles = {
         paper: {
 
@@ -107,6 +222,10 @@ const AdminView = props => {
         title: {
             paddingBottom: '4%',
             color: 'white'
+        },
+        userPanel: {
+            position: 'relative',
+            top: '-100px'
         }
 
     }
@@ -121,13 +240,36 @@ const AdminView = props => {
             {loading ? <LinearProgress /> : null}
 
             <Grid item xs={6} align='center' >
-                <AdminPanel
-                    yearlyRevenue={yearlyRevenue}
-                    paymentAmtDue={paymentAmountDue}
-                    rollingThreeMonthRevenue={rollingThreeMonthRevenue}
-                    userName={userName}
-                />
+                <Grid container justify='center' direction='column' spacing={4}>
+                    <Grid item>
+                        <AdminPanel
+                            yearlyRevenue={yearlyRevenue}
+                            paymentAmtDue={paymentAmountDue}
+                            rollingThreeMonthRevenue={rollingThreeMonthRevenue}
+                            userName={loggedInUser.userName}
+                            setMode={setMode}
+                            showEmployeePanel={showEmployeePanel}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <UserPanel
+                            handleValueChange={handleValueChange}
+                            userName={user.userName}
+                            password={user.password}
+                            handleAddNewUser={handleAddNewUser}
+                            savedUser={savedUser}
+                            handleGeneratePassword={handleGeneratePassword}
+                            userProfiles={userProfiles}
+                            loggedInUser={loggedInUser}
+                            mode={mode}
+                            handleDeleteUser={handleDeleteUser}
+                            handleUpdateCredentials={handleUpdateCredentials}
+                        />
+                    </Grid>
+                </Grid>
+
             </Grid>
+
             <Grid item xs={6} align='center' style={styles.chart}>
                 <Paper style={styles.paper}>
                     <Chart
@@ -138,8 +280,6 @@ const AdminView = props => {
                         <ValueAxis scaleName="profit" showGrid={false} showLine showTicks />
                         <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
                         <ArgumentAxis />
-
-
                         <BarSeries
                             name="Monthly Profit"
                             valueField="profit"
@@ -156,6 +296,7 @@ const AdminView = props => {
                 </Paper>
 
             </Grid>
+
         </Grid>
     )
 }
@@ -168,48 +309,6 @@ const toolTipComponent = (props) => {
     )
 };
 
-
-
-const sales = {
-    2017: [
-        { month: 'Jan', profit: 50 },
-        { month: 'Feb', profit: 100 },
-        { month: 'Mar', profit: 30 },
-        { month: 'Apr', profit: 107 },
-        { month: 'May', profit: 95 },
-        { month: 'Jun', profit: 150 },
-        { month: 'Jul', profit: 120 },
-
-    ],
-    2018: [
-        { month: 'Jan', profit: 100, total: 1000 },
-        { month: 'Feb', profit: 200, total: 4300 },
-        { month: 'Mar', profit: 50, total: 1200 },
-        { month: 'Apr', profit: 127, total: 7150 },
-        { month: 'May', profit: 105, total: 4340 },
-        { month: 'Jun', profit: 180, total: 7520 },
-        { month: 'Jul', profit: 150, total: 5380 },
-        { month: 'Aug', profit: 120, total: 2590 },
-        { month: 'Sep', profit: 59, total: 2700 },
-        { month: 'Oct', profit: 139, total: 2800 },
-        { month: 'Nov', profit: 66, total: 3450 },
-        { month: 'Dec', profit: 55, total: 3260 },
-    ],
-    2019: [
-        { month: 'Jan', profit: 170, total: 856 },
-        { month: 'Feb', profit: 150, total: 3574 },
-        { month: 'Mar', profit: 10, total: 1198 },
-        { month: 'Apr', profit: 33, total: 6150 },
-        { month: 'May', profit: 84, total: 3340 },
-        { month: 'Jun', profit: 120, total: 5520 },
-        { month: 'Jul', profit: 110, total: 3380 },
-        { month: 'Aug', profit: 90, total: 1890 },
-        { month: 'Sep', profit: 29, total: 1900 },
-        { month: 'Oct', profit: 118, total: 2300 },
-        { month: 'Nov', profit: 48, total: 3198 },
-        { month: 'Dec', profit: 12, total: 2410 },
-    ],
-};
 
 
 export default AdminView;

@@ -54,6 +54,22 @@ class ApexAutoMoversService {
     getVehModel(year, make) {
         return this.instance.get(`https://done.ship.cars/models/?year=${year}&make=${make}`)
     }
+
+    createNewUser(body) {
+        return this.instance.post('http://localhost:5000/apexautomovers/admin', body)
+    }
+
+    getAllUserProfiles() {
+        return this.instance.get('http://localhost:5000/apexautomovers/admin/profiles');
+    }
+
+    deleteUserProfile(id) {
+        return this.instance.delete(`http://localhost:5000/apexautomovers/admin/${id}`);
+    }
+
+    updateUserProfile(id, body) {
+        return this.instance.put(`http://localhost:5000/apexautomovers/admin/${id}`, body);
+    }
 }
 
 export default ApexAutoMoversService;

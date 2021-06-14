@@ -39,5 +39,29 @@ router.route("/carrier/:id").delete((req, res) => {
 
 router.route("/carrier").get((req, res) => {
     return service.getAllCarriers(req, res)
+});
+
+router.route('/admin').post((req, res) => {
+    console.log(req.body, 'body in controller')
+    return service.createUser(req, res)
+});
+
+router.route('/admin/:id').delete((req, res) => {
+    console.log(req.body, 'body in controller')
+    return service.deleteUser(req, res);
+});
+
+router.route('/admin/:id').put((req, res) => {
+    return service.updateUser(req, res);
+});
+
+router.route('/admin/profiles').get((req, res) => {
+    return service.getAllUsers(req, res);
+});
+
+router.route('/admin/:id').put((req, res) => {
+    return service.updateUser(req, res)
 })
+
+
 module.exports = router;
