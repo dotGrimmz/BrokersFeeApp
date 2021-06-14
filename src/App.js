@@ -2,7 +2,6 @@ import Layout from './Layout/Layout';
 import React, { lazy, Suspense } from "react";
 import ContextImplementation from './context/ContextImplementation';
 import { createBrowserHistory } from "history";
-import { withRouter } from 'react-router';
 
 import DateFnsUtils from '@date-io/date-fns';
 import { BrowserRouter, Route, Switch } from "react-router-dom";

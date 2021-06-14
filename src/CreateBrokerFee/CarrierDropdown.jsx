@@ -1,18 +1,15 @@
 import React from 'react';
-import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import IconButton from '@material-ui/core/IconButton';
-import { Icon } from '@material-ui/core';
 
 
 
 
 const CarrierDropdown = props => {
-    const { name, address, contact, phoneNumber, notes, handleDeleteCarrier, id } = props;
+    const { name, address, contact, phoneNumber, handleDeleteCarrier, id } = props;
 
     const handleAvatarInitials = (str) => {
         let first = str.charAt(0).toUpperCase()
@@ -20,7 +17,6 @@ const CarrierDropdown = props => {
         let second = str.charAt(secondIndex + 1).toUpperCase();
         return first + second
     }
-    // console.log(name, 'name in the dropdown')
     const styles = {
         card: {
             width: '400px'

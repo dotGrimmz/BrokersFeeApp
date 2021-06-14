@@ -39,7 +39,6 @@ class ApexAutoMoversService {
     }
 
     deleteCarrier(id) {
-        console.log(id, 'id from the controller')
         return this.instance.delete(`http://localhost:5000/apexautomovers/carrier/${id}`);
     }
 

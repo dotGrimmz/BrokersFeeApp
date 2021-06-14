@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Slide from '@material-ui/core/Slide';
 import AdminPanel from './AdminPanel.jsx';
 import AAMContext from '../context/AAMContext';
 import Grid from '@material-ui/core/Grid'
@@ -8,8 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import UserPanel from '../UserPanel/UserPanel';
 import { useSnackbar } from 'notistack';
-
-
+import { withStyles } from '@material-ui/core/styles';
 
 import {
     Chart,
@@ -17,16 +15,18 @@ import {
     ValueAxis,
     BarSeries,
     Legend,
-    Tooltip
+    Tooltip,
+    Title,
+
 } from '@devexpress/dx-react-chart-material-ui';
-import { ValueScale, Animation, EventTracker } from '@devexpress/dx-react-chart';
+import { Animation, EventTracker, Stack } from '@devexpress/dx-react-chart';
 import ApexAutoMoversService from '../service/ApexAutoMoversService';
 
 
+const service = new ApexAutoMoversService();
 
 
 const AdminView = props => {
-    const service = new ApexAutoMoversService();
     const [yearlyRevenue, setYearlyRevenue] = useState('');
     const [paymentAmountDue, setPaymentAmtDue] = useState('');
     const [rollingThreeMonthRevenue, setRollingThreeMonthRevenue] = useState('');
@@ -55,7 +55,7 @@ const AdminView = props => {
                 setPaymentAmtDue(getTotalDue(pendingBFAs))
                 setYearlyRevenue(getYearlyEarnings(paidBFAs))
                 setRollingThreeMonthRevenue(getRollingThreeMonthEarnings(paidBFAs))
-                setTableData(createTableData(paidBFAs))
+                setTableData(createTableData(res.data))
 
 
             } catch (error) {
@@ -75,11 +75,9 @@ const AdminView = props => {
             try {
                 let res = await service.getAllUserProfiles()
                 if (res.status === 200) {
-                    console.log(res.data, 'this is it')
                     let filtered = res.data.filter(x => loggedInUser.userName !== x.userName)
                     setUserProfiles(filtered)
                 }
-                console.log(res, 'res.data')
             } catch (err) {
                 enqueueSnackbar('Unable to fetch user profiles', { variant: "error" })
                 console.error(err)
@@ -96,7 +94,8 @@ const AdminView = props => {
 
             arr.push(parseInt(x.receivable))
         });
-        return arr.reduce((total, num) => total + num)
+        let newArr = arr.reduce((total, num) => total + num)
+        return newArr
 
     }
 
@@ -132,10 +131,8 @@ const AdminView = props => {
         let clear = { userName: '', password: '' }
         try {
             let res = await service.createNewUser(user)
-            console.log(res, 'res')
             if (res.status === 200) {
                 enqueueSnackbar('Successfully Created New User', { variant: 'success' });
-                console.log(res.data)
                 setSavedUser(res.data)
             }
         } catch (err) {
@@ -152,11 +149,9 @@ const AdminView = props => {
         try {
             let res = await service.getAllUserProfiles()
             if (res.status === 200) {
-                console.log(res.data, 'this is it')
                 let filtered = res.data.filter(x => loggedInUser.userName !== x.userName)
                 setUserProfiles(filtered)
             }
-            console.log(res, 'res.data')
         } catch (err) {
             enqueueSnackbar('Unable to fetch user profiles', { variant: "error" })
             console.error(err)
@@ -196,7 +191,6 @@ const AdminView = props => {
 
             if (res.status === 200) enqueueSnackbar('Successfully Updated Profile', { variant: 'success' });
 
-            console.log(res, 'res from update')
         } catch (err) {
             console.error(err)
             enqueueSnackbar('Unable to Update Profile', { variant: 'error' });
@@ -229,6 +223,18 @@ const AdminView = props => {
         }
 
     }
+
+    const legendStyles = () => ({
+        root: {
+            display: 'flex',
+            margin: 'auto',
+            flexDirection: 'row',
+        },
+    });
+    const legendRootBase = ({ classes, ...restProps }) => (
+        <Legend.Root {...restProps} className={classes.root} />
+    );
+    const Root = withStyles(legendStyles, { name: 'LegendRoot' })(legendRootBase);
     return (
 
         <Grid container justify='flex-start'>
@@ -275,23 +281,32 @@ const AdminView = props => {
                     <Chart
                         data={tableData}
                     >
-                        <ValueScale name="profit" />
-                        <ValueScale name="total" />
-                        <ValueAxis scaleName="profit" showGrid={false} showLine showTicks />
-                        <ValueAxis scaleName="total" position="right" showGrid={false} showLine showTicks />
                         <ArgumentAxis />
+
+
+                        <ValueAxis showGrid={false} showLine showTicks />
                         <BarSeries
-                            name="Monthly Profit"
+                            name="Profit"
                             valueField="profit"
                             argumentField="month"
-                            scaleName="profit"
+
+                        />
+                        <BarSeries
+                            name="Credit"
+                            valueField="credit"
+                            argumentField="month"
 
                         />
                         <EventTracker />
                         <Tooltip contentComponent={toolTipComponent} />
                         <Animation />
-                        <Legend />
-
+                        <Legend position='bottom' rootComponent={Root} />
+                        <Title text="Monthly Profits and Credits" />
+                        <Stack
+                            stacks={[
+                                { series: ['profit', 'credit'] },
+                            ]}
+                        />
                     </Chart>
                 </Paper>
 

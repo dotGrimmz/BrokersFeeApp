@@ -13,7 +13,6 @@ const UserDialog = props => {
         handleDeleteUser(id);
         setOpen(false);
     }
-    console.log(profileUserName, 'profile user name')
     return (
         <Dialog
             open={open}

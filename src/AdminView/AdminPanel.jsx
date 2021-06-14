@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card'
-import AAMContext from '../context/AAMContext';
 import Grid from '@material-ui/core/Grid';
 import Slide from '@material-ui/core/Slide';
 import Divider from '@material-ui/core/Divider';
@@ -37,14 +36,14 @@ const AdminPanel = props => {
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Divider fullWidth />
+                        <Divider />
                     </Grid>
                     <Grid item xs={6} style={styles.detail}>
                         <Typography variant='caption'>
                             Total Payments still due:
                         </Typography>
                     </Grid>
-                    <Grid xs={6} style={styles.detail}>
+                    <Grid item xs={6} style={styles.detail}>
 
                         <Typography style={styles.paymentAmtDue}> <b>${paymentAmtDue}</b> </Typography>
                     </Grid>
@@ -53,7 +52,7 @@ const AdminPanel = props => {
                             Rolling Three Month Revenue:
                         </Typography>
                     </Grid>
-                    <Grid xs={6} style={styles.detail}>
+                    <Grid item xs={6} style={styles.detail}>
                         <Typography style={styles.yearlyRev}> <b>${rollingThreeMonthRevenue}</b></Typography>
                     </Grid>
                     <Grid item xs={6} style={styles.detail}>
@@ -61,13 +60,13 @@ const AdminPanel = props => {
                             Yearly Revenue:
                         </Typography>
                     </Grid>
-                    <Grid xs={6} style={styles.detail}>
+                    <Grid item xs={6} style={styles.detail}>
                         <Typography style={styles.yearlyRev}> <b>${yearlyRevenue}</b></Typography>
                     </Grid>
 
                 </Grid>
                 <Grid item xs={12} style={styles.detail}>
-                    <Divider fullWidth />
+                    <Divider />
                 </Grid>
                 <Grid container spacing={2} >
                     <Grid item xs={6}>

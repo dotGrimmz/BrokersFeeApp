@@ -36,7 +36,8 @@ class ContextImplementation extends Component {
                 //if the month number refrences the month obj
                 if (this.state.convertedMonth[i][month]) {
                     //add up the sum o
-                    this.state.convertedMonth[i].profit += parseInt(x.receivable)
+                    if (x.paid) this.state.convertedMonth[i].profit += parseInt(x.receivable)
+                    if (x.paid === false) this.state.convertedMonth[i].credit += parseInt(x.receivable)
 
                     break
                 }
@@ -44,12 +45,13 @@ class ContextImplementation extends Component {
         });
         // only render months that have profits
         let tableData = this.state.convertedMonth.filter(x => x.profit !== 0)
+
         return tableData
     }
 
 
     clearTableData = () => {
-        this.state.convertedMonth.map(x => x.profit = 0)
+        this.state.convertedMonth.map(x => (x.profit = 0, x.credit = 0))
 
     }
 
@@ -74,18 +76,18 @@ class ContextImplementation extends Component {
         brokerFees: [],
         yearlyRevenue: [],
         convertedMonth: [
-            { 0: 'Jan', profit: 0, month: 'Jan' },
-            { 1: 'Feb', profit: 0, month: 'Feb' },
-            { 2: 'Mar', profit: 0, month: 'Mar' },
-            { 3: 'Apr', profit: 0, month: 'Apr' },
-            { 4: 'May', profit: 0, month: 'May' },
-            { 5: 'Jun', profit: 0, month: 'Jun' },
-            { 6: 'Jul', profit: 0, month: 'Jul' },
-            { 7: 'Aug', profit: 0, month: 'Aug' },
-            { 8: 'Sep', profit: 0, month: 'Sep' },
-            { 9: 'Oct', profit: 0, month: 'Oct' },
-            { 10: 'Nov', profit: 0, month: 'Nov' },
-            { 11: 'Dec', profit: 0, month: 'Dec' },
+            { 0: 'Jan', profit: 0, month: 'Jan', credit: 0 },
+            { 1: 'Feb', profit: 0, month: 'Feb', credit: 0 },
+            { 2: 'Mar', profit: 0, month: 'Mar', credit: 0 },
+            { 3: 'Apr', profit: 0, month: 'Apr', credit: 0 },
+            { 4: 'May', profit: 0, month: 'May', credit: 0 },
+            { 5: 'Jun', profit: 0, month: 'Jun', credit: 0 },
+            { 6: 'Jul', profit: 0, month: 'Jul', credit: 0 },
+            { 7: 'Aug', profit: 0, month: 'Aug', credit: 0 },
+            { 8: 'Sep', profit: 0, month: 'Sep', credit: 0 },
+            { 9: 'Oct', profit: 0, month: 'Oct', credit: 0 },
+            { 10: 'Nov', profit: 0, month: 'Nov', credit: 0 },
+            { 11: 'Dec', profit: 0, month: 'Dec', credit: 0 },
         ],
         years: [
             "1990",
@@ -128,7 +130,6 @@ class ContextImplementation extends Component {
 
     render() {
         const { children } = this.props;
-        console.log(this.state, 'state obj')
 
         return (
             <AAMContext.Provider value={this.state}>{children}</AAMContext.Provider>

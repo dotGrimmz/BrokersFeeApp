@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import Pagination from '@material-ui/lab/Pagination';
 import UserDialog from './UserDialog';
 import AAMContext from '../context/AAMContext';
 import CredentialModal from './CredentialModal.jsx';
@@ -22,7 +21,7 @@ import CredentialModal from './CredentialModal.jsx';
 const UserPanel = props => {
 
 
-    const { handleValueChange, userName, password, mode, handleAddNewUser, savedUser, handleGeneratePassword, userProfiles, handleDeleteUser, handleUpdateCredentials } = props;
+    const { handleValueChange, mode, handleAddNewUser, savedUser, handleGeneratePassword, userProfiles, handleDeleteUser, handleUpdateCredentials } = props;
     const [credentialModal, setCredentialModal] = useState(false);
 
     const context = useContext(AAMContext);
@@ -36,10 +35,9 @@ const UserPanel = props => {
     const handleCredentialChange = e => {
         let obj = { ...credentials, [e.target.name]: e.target.value }
         setCredentials(obj);
-        console.log(obj, 'what')
     }
     let firstPage = userProfiles.slice(0, 3);
-    let secondPage = userProfiles.slice(3, 6)
+    // let secondPage = userProfiles.slice(3, 6)
 
 
     const styles = {
@@ -69,13 +67,13 @@ const UserPanel = props => {
         }
     }
 
-    const handleFoward = () => {
+    // const handleFoward = () => {
 
-    }
+    // }
 
-    const handleBackwards = () => {
+    // const handleBackwards = () => {
 
-    }
+    // }
 
 
 
@@ -119,13 +117,13 @@ const UserPanel = props => {
                         </Typography>
                     </Grid>
                     <Grid item xs={12} style={styles.detail}>
-                        <Divider fullwidth />
+                        <Divider />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             onChange={handleValueChange}
                             name='userName'
-                            value={userName}
+                            value={credentials.userName}
                             variant='outlined'
                             label='Set Username'
                         />
@@ -134,7 +132,7 @@ const UserPanel = props => {
                         <TextField
                             onChange={handleValueChange}
                             name='password'
-                            value={password}
+                            value={credentials.password}
                             variant='outlined'
                             label='Set Password'
                         />
@@ -151,7 +149,7 @@ const UserPanel = props => {
 
                     </Grid>
                     <Grid item xs={12} style={styles.detail}>
-                        <Divider fullWidth />
+                        <Divider />
                     </Grid>
                     {savedUser?.userName?.length > 0 && <Grid item xs={12}>
                         <Chip
@@ -167,7 +165,7 @@ const UserPanel = props => {
                         </Typography>
                     </Grid>
                     <Grid item xs={12} style={styles.detail}>
-                        <Divider fullwidth />
+                        <Divider />
                     </Grid>
                     <Grid item xs={12} align='row'>
 
@@ -187,7 +185,7 @@ const UserPanel = props => {
                         </Typography>
                     </Grid>
                     <Grid item xs={12} style={styles.detail}>
-                        <Divider fullwidth />
+                        <Divider />
                     </Grid>
                     <Grid item xs={12} style={styles.textfield}>
                         <TextField
@@ -195,7 +193,6 @@ const UserPanel = props => {
                             fullWidth
                             label='User Name'
                             name='userName'
-                            defaultValue={loggedInUser.userName}
                             onChange={handleCredentialChange}
                             value={credentials.userName}
 
@@ -214,7 +211,7 @@ const UserPanel = props => {
                         />
                     </Grid>
                     <Grid item xs={12} style={styles.detail}>
-                        <Divider fullwidth />
+                        <Divider />
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant='contained' color='secondary' onClick={() => setCredentialModal(true)} disabled={credentials.password.length < 4}>

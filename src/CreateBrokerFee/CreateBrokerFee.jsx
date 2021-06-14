@@ -13,7 +13,6 @@ import AAMContext from '../context/AAMContext';
 import { withRouter } from 'react-router';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import CarrierModal from '../CarrierModal/CarrierModal';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import CarrierDropdown from './CarrierDropdown';
 import { useHistory } from "react-router-dom";
@@ -190,9 +189,12 @@ const CreateBrokerFee = () => {
 
         try {
             let res = await service.createCarrier(carrierObj)
-            enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
-            fetchCarriers()
-            setOpenCarrier(false)
+            if (res.status === 200) {
+                enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
+                fetchCarriers()
+                setOpenCarrier(false)
+            }
+
         } catch (err) {
             console.error(err);
             enqueueSnackbar('Failed to Add Carrier', { variant: 'error' })

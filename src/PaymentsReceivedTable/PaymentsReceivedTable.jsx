@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -17,7 +17,6 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import AAMContext from '../context/AAMContext';
 import { useHistory } from "react-router-dom";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Divider from '@material-ui/core/Divider';
@@ -31,8 +30,6 @@ const PaymentsReceivedTable = props => {
     const service = new AAMService();
     const history = useHistory();
 
-    const context = useContext(AAMContext);
-    const { setAllBrokerFees } = context;
     const [paidBrokerFees, setPaidBrokerFees] = useState([])
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -167,12 +164,12 @@ const PaymentsReceivedTable = props => {
                 <Table aria-label="customized table" stlye={{ 'min-width': '400px' }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell style={{ 'width': '20%', 'background-color': 'grey' }} align="center"><b>Carrier</b></TableCell>
-                            <TableCell style={{ 'width': '10%', 'background-color': 'grey' }} align="center"><b>Order ID</b></TableCell>
-                            <TableCell style={{ 'width': '15%', 'background-color': 'grey' }} align="center"><b>Vehicle Info</b></TableCell>
-                            <TableCell style={{ 'width': '15%', 'background-color': 'grey' }} align="center"><b>Delivery Date</b></TableCell>
-                            <TableCell style={{ 'width': '10%', 'background-color': 'grey' }} align="center"><b>Receivable</b></TableCell>
-                            <TableCell style={{ 'width': '30%', 'background-color': 'grey' }} align="center"><b>Notes</b></TableCell>
+                            <TableCell style={{ 'width': '20%', 'backgroundColor': 'grey' }} align="center"><b>Carrier</b></TableCell>
+                            <TableCell style={{ 'width': '10%', 'backgroundColor': 'grey' }} align="center"><b>Order ID</b></TableCell>
+                            <TableCell style={{ 'width': '15%', 'backgroundColor': 'grey' }} align="center"><b>Vehicle Info</b></TableCell>
+                            <TableCell style={{ 'width': '15%', 'backgroundColor': 'grey' }} align="center"><b>Delivery Date</b></TableCell>
+                            <TableCell style={{ 'width': '10%', 'backgroundColor': 'grey' }} align="center"><b>Receivable</b></TableCell>
+                            <TableCell style={{ 'width': '30%', 'backgroundColor': 'grey' }} align="center"><b>Notes</b></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -185,7 +182,7 @@ const PaymentsReceivedTable = props => {
                                         <Grid item xs={12}>
                                             {row.carrier.name} - {row.buyerNum}
                                         </Grid>
-                                        <Divider orientation="vertical" style={{ 'padding': '.5%', 'background-color': 'blue', 'margin': '.3%' }} fullWidth flexItem />
+                                        <Divider orientation="vertical" style={{ 'padding': '.5%', 'backgroundColor': 'blue', 'margin': '.3%' }} />
                                         <Grid item>
                                             {row.carrier.contact} {row.carrier.phoneNumber}
                                         </Grid>

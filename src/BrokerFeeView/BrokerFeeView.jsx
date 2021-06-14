@@ -12,7 +12,6 @@ import ApexAutoMoversService from '../service/ApexAutoMoversService';
 import AAMContext from '../context/AAMContext';
 import MenuItem from '@material-ui/core/MenuItem';
 import CarrierDropdown from '../CreateBrokerFee/CarrierDropdown';
-import { useHistory } from "react-router-dom";
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -21,17 +20,16 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CarrierModal from '../CarrierModal/CarrierModal';
 
+const service = new ApexAutoMoversService();
 
 
 
 const BrokerFeeView = (props) => {
     const { match } = props;
-    const history = useHistory();
     const { enqueueSnackbar } = useSnackbar();
 
-    const service = new ApexAutoMoversService();
     const context = useContext(AAMContext);
-    const { userName, brokerFees, years } = context;
+    const { userName, years } = context;
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [dateChanged, setDateChanged] = useState(false)
@@ -78,7 +76,6 @@ const BrokerFeeView = (props) => {
         const findBrokerFee = async (selectedId) => {
             try {
                 let res = await service.fetchBrokerFee(selectedId);
-                console.log(res, 'fetched')
                 setBrokerObj(res.data);
                 setSelectedDate(res.data.deliveryDate)
             } catch (err) {
@@ -181,9 +178,12 @@ const BrokerFeeView = (props) => {
 
         try {
             let res = await service.createCarrier(carrierObj)
-            enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
-            fetchCarriers()
-            setOpen(false)
+            if (res.status === 200) {
+                enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
+                fetchCarriers()
+                setOpen(false)
+            }
+
         } catch (err) {
             console.error(err);
             enqueueSnackbar('Failed to Add Carrier', { variant: 'error' })
@@ -208,7 +208,6 @@ const BrokerFeeView = (props) => {
             if (res.status === 200) {
                 setBrokerObj(res.data)
                 enqueueSnackbar('Successfully Updated Broker Fee', { variant: 'success' })
-                console.log(res, 'updated response');
                 findBrokerFee(match.params.id)
 
             }

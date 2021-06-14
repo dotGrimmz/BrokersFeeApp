@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -17,7 +17,6 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import AAMContext from '../context/AAMContext';
 import { useHistory } from "react-router-dom";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Divider from '@material-ui/core/Divider';
@@ -29,8 +28,6 @@ const PendingPaymentsTable = props => {
     const service = new AAMService();
     const history = useHistory();
 
-    const context = useContext(AAMContext);
-    const { setAllBrokerFees } = context;
     const [brokerFees, setBrokerFees] = useState([])
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -186,7 +183,7 @@ const PendingPaymentsTable = props => {
                                             <Grid item xs={12}>
                                                 {row.carrier.name} - {row.buyerNum}
                                             </Grid>
-                                            <Divider orientation="vertical" style={{ 'padding': '.5%', 'backgroundColor': 'blue', 'margin': '.3%' }} fullWidth flexItem />
+                                            <Divider orientation="vertical" style={{ 'padding': '.5%', 'backgroundColor': 'blue', 'margin': '.3%' }} />
 
                                             <Grid item>
                                                 {row.carrier.contact} {row.carrier.phoneNumber}
