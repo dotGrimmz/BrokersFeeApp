@@ -8,6 +8,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import UserPanel from '../UserPanel/UserPanel';
 import { useSnackbar } from 'notistack';
 import { withStyles } from '@material-ui/core/styles';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 import {
     Chart,
@@ -42,6 +44,9 @@ const AdminView = props => {
     const [tableData, setTableData] = useState([]);
     const [loading, setLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
+    const theme = useTheme();
+
+    const medScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
     useEffect(() => {
 
@@ -211,18 +216,18 @@ const AdminView = props => {
                 "#808080" +
                 " 100%)",
         },
-        titleContainer: {
-            marginTop: '7%',
-        },
-
         title: {
-            paddingBottom: '4%',
-            color: 'white'
+            marginBottom: '0%',
+            marginTop: medScreen ? '12%' : '7%'
         },
         userPanel: {
             position: 'relative',
             top: '-100px'
+        },
+        chart: {
+            padding: medScreen ? '5%' : '0%'
         }
+
 
     }
 
@@ -239,15 +244,15 @@ const AdminView = props => {
     const Root = withStyles(legendStyles, { name: 'LegendRoot' })(legendRootBase);
     return (
 
-        <Grid container justify='flex-start'>
-            <Grid item xs={12} align='center' style={styles.titleContainer}>
-                <Typography variant='h2' style={styles.title}>
+        <Grid container justify='flex-start' style={styles.root}>
+            <Grid item xs={12} align='center' style={styles.title}>
+                <Typography variant='h2' style={{ 'color': 'white' }} >
                     Admin View
         </Typography>
             </Grid>
             {loading ? <LinearProgress /> : null}
 
-            <Grid item xs={6} align='center' >
+            <Grid item xs={12} md={6} align='center' >
                 <Grid container justify='center' direction='column' spacing={4}>
                     <Grid item>
                         <AdminPanel
@@ -278,7 +283,7 @@ const AdminView = props => {
 
             </Grid>
 
-            <Grid item xs={6} align='center' style={styles.chart}>
+            <Grid item md={6} xs={12} align='center' style={styles.chart}>
                 <Paper style={styles.paper}>
                     <Chart
                         data={tableData}

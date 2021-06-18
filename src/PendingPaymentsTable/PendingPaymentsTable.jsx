@@ -20,6 +20,8 @@ import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Divider from '@material-ui/core/Divider';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+
 
 
 const service = new AAMService();
@@ -33,7 +35,9 @@ const PendingPaymentsTable = props => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(8);
 
+    const theme = useTheme();
 
+    const medScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, brokerFees.length - page * rowsPerPage);
 
@@ -69,13 +73,13 @@ const PendingPaymentsTable = props => {
 
     const styles = {
         root: {
-            width: '100%',
             marginLeft: '6%',
-            paddingTop: '5%',
+            marginTop: '2%'
 
         },
         title: {
-            padding: '.5%'
+            marginBottom: '0%',
+            marginTop: medScreen ? '7%' : '4%'
         },
         table: {
             width: '100%',

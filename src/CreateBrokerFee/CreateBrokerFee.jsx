@@ -138,11 +138,12 @@ const CreateBrokerFee = () => {
             width: '100%',
             height: 'auto',
             marginTop: '2%',
-            marginLeft: medScreen ? '0%' : '7%'
+            marginLeft: medScreen ? '0%' : '7%',
+
         },
         title: {
             marginBottom: '0%',
-            marginTop: medScreen ? '7%' : '2%'
+            paddingTop: medScreen ? '12%' : '5%'
         },
         input: {
             padding: '4%',

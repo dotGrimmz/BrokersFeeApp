@@ -89,7 +89,6 @@ const LoginPage = props => {
             width: '500px',
             marginLeft: medScreen ? '0%' : '30%',
             zIndex: '2',
-            // top: '30%'
             marginTop: '20%'
         },
         title: {

@@ -16,12 +16,12 @@ import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedI
 import SupervisorAccountOutlinedIcon from '@material-ui/icons/SupervisorAccountOutlined';
 import AAMContext from '../context/AAMContext';
 import { useHistory } from "react-router-dom";
-import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import { Menu } from '@material-ui/core';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 
 
 
@@ -90,12 +90,22 @@ const Layout = (props) => {
         menuBtn: {
             display: medScreen ? 'flex' : 'none'
 
+        },
+        footer: {
+            backgroundColor: "lightblue",
+            zIndex: 1300,
+            position: 'absolute',
+            bottom: 0,
+            width: '100%'
+
+        },
+        links: {
+            padding: '.5%'
         }
     }
 
     const handleLogOut = () => {
         window.sessionStorage.removeItem('user')
-        console.log(window.sessionStorage.getItem('user'), 'should be gone')
 
         history.replace('/login');
         logoutUser()
@@ -106,7 +116,6 @@ const Layout = (props) => {
         setMobileOpen(!mobileOpen)
     }
 
-    console.log(window.location.href.includes("/login"), 'heller')
 
 
     const menuLinks = [{
@@ -146,7 +155,6 @@ const Layout = (props) => {
 
             </AppBar>
 
-            //////
             {!medScreen && <Drawer
                 style={styles.drawer}
                 variant='permanent'
@@ -183,7 +191,6 @@ const Layout = (props) => {
             </Drawer>}
 
 
-            ///// 
             {medScreen && <Drawer
                 style={styles.drawer}
                 variant={window.location.href.includes('/login') ? 'temporary' : 'persistent'}
@@ -223,6 +230,33 @@ const Layout = (props) => {
             <Container maxWidth='lg' style={styles.content}>
                 {children}
             </Container>
+            <footer style={styles.footer}>
+                <Grid container justify='flex-end' display='row'>
+                    <Grid item xs={10} align='left'>
+                        <Link target="_blank" href="https://www.centraldispatch.com/" variant='caption' style={styles.links} >
+                            Central Dispactch
+                        </Link>
+                        <Link target="_blank" href="https://www.google.com/search?q=iaa" variant='caption' style={styles.links} >
+                            IAA
+                        </Link>
+
+                        <Link target="_blank" href="https://www.google.com/search?q=copart" variant='caption' style={styles.links} >
+                            CoPart
+                        </Link>
+
+
+
+                    </Grid>
+                    <Grid item xs={2} align='right'>
+                        &copy; {1900 + new Date().getYear()} , Powered by <b>JusGrimmz</b>
+
+                    </Grid>
+
+
+                </Grid>
+
+
+            </footer>
         </div >
     )
 }

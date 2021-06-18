@@ -253,7 +253,7 @@ const BrokerFeeView = (props) => {
         },
         title: {
             marginBottom: '0%',
-            marginTop: medScreen ? '7%' : '2%'
+            marginTop: medScreen ? '12%' : '5%'
         },
         input: {
             padding: '4%',

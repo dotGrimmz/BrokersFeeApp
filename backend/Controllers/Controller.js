@@ -29,7 +29,6 @@ router.route("/bfaview/:id").get((req, res) => {
 
 
 router.route("/carrier").post((req, res) => {
-    console.log(req.body, 'req body in controller')
     return service.createCarrier(req, res);
 });
 
@@ -42,12 +41,10 @@ router.route("/carrier").get((req, res) => {
 });
 
 router.route('/admin').post((req, res) => {
-    console.log(req.body, 'body in controller')
     return service.createUser(req, res)
 });
 
 router.route('/admin/:id').delete((req, res) => {
-    console.log(req.body, 'body in controller')
     return service.deleteUser(req, res);
 });
 

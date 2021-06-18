@@ -20,6 +20,7 @@ import Typography from '@material-ui/core/Typography';
 import { useHistory } from "react-router-dom";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Divider from '@material-ui/core/Divider';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 
 
@@ -34,7 +35,9 @@ const PaymentsReceivedTable = props => {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(8);
+    const theme = useTheme();
 
+    const medScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, paidBrokerFees.length - page * rowsPerPage);
 
@@ -70,20 +73,16 @@ const PaymentsReceivedTable = props => {
 
     const styles = {
         root: {
-            // width: '100%',
-            // minWidth: '600px',
-            minHeight: '500px',
-            // paddingLeft: '5%',
+
             marginLeft: '6%',
-            paddingTop: '5%'
-            // position: 'absolute', left: '25%', top: '9%',
+            marginTop: '2%'
 
         },
         title: {
-            padding: '.5%'
+            marginBottom: '0%',
+            marginTop: medScreen ? '7%' : '4%'
         },
         table: {
-            // position: 'relative', left: '0%', top: '0%',
             width: '100%'
         }
     }

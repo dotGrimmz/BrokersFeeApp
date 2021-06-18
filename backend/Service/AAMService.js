@@ -75,10 +75,8 @@ class AAMService {
                 doc.save((err, doc) => {
                     if (!err) {
                         res.send(doc)
-                        console.log(doc, 'theres no error so it should update')
                     } else {
                         res.status(400).json("Error: Broker fee did not update" + err)
-                        console.log('failure')
 
                     }
 
@@ -156,7 +154,6 @@ class AAMService {
     deleteUser(req, res) {
         const id = req.params.id;
         UserDomain.findByIdAndDelete(id, {}, (err, doc) => {
-            console.log(doc, 'what is doc')
             if (err) {
                 res.status(400).json(err)
             } else {
