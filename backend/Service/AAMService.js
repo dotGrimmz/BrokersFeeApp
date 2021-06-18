@@ -30,7 +30,7 @@ class AAMService {
             })
             .then(() => {
                 if (validated === false) {
-                    res.status(200).send({
+                    res.status(400).send({
                         login: false,
                         message: wrongPassword
                             ? "Incorrect Password"

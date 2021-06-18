@@ -1,14 +1,13 @@
 import Layout from './Layout/Layout';
 import React, { lazy, Suspense } from "react";
 import ContextImplementation from './context/ContextImplementation';
-import { createBrowserHistory } from "history";
 
 import DateFnsUtils from '@date-io/date-fns';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { SnackbarProvider } from 'notistack';
-
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 
 
 const LoginPage = lazy(() => import('./Login/LoginPage.jsx'));
@@ -24,24 +23,22 @@ const AdminView = lazy(() => import('./AdminView/AdminView.jsx'));
 
 function App() {
 
-  let hist = createBrowserHistory();
-
   return (
     <Suspense fallback={<div />}>
       <ContextImplementation>
         <SnackbarProvider>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <BrowserRouter history={hist}  >
+            <BrowserRouter  >
               <Layout >
                 <Switch>
                   <Route path='/' exact component={LoginPage} />
                   <Route path='/login' component={LoginPage} />
-                  <Route path='/logout' component={LogoutPage} />
-                  <Route path='/bfview/:id' component={BrokerFeeView} />
-                  <Route path='/create' component={CreateBrokerFee} />
-                  <Route path='/pending' component={PendingPaymentsTable} />
-                  <Route path='/paid' component={PaymentsRecievedTable} />
-                  <Route path='/admin' component={AdminView} />
+                  <ProtectedRoute path='/logout' component={LogoutPage} />
+                  <ProtectedRoute path='/bfview/:id' component={BrokerFeeView} />
+                  <ProtectedRoute path='/create' component={CreateBrokerFee} />
+                  <ProtectedRoute path='/pending' component={PendingPaymentsTable} />
+                  <ProtectedRoute path='/paid' component={PaymentsRecievedTable} />
+                  <ProtectedRoute path='/admin' component={AdminView} />
 
                 </Switch>
               </Layout>

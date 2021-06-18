@@ -20,15 +20,13 @@ class ContextImplementation extends Component {
 
     logoutUser = () => {
         this.setState({
-            loggedInUser: {
-                userName: ''
-            }
+            loggedInUser: null
         });
     }
 
     createTableData = (data) => {
         //iterate though each broker fee
-        data.map((x) => {
+        data.forEach((x) => {
             // get the month for each paid broker fee
             let month = new Date(x.deliveryDate).getMonth()
             // iterate though the yearly profit array
@@ -38,6 +36,7 @@ class ContextImplementation extends Component {
                     //add up the sum o
                     if (x.paid) this.state.convertedMonth[i].profit += parseInt(x.receivable)
                     if (x.paid === false) this.state.convertedMonth[i].credit += parseInt(x.receivable)
+
 
                     break
                 }
@@ -51,7 +50,7 @@ class ContextImplementation extends Component {
 
 
     clearTableData = () => {
-        this.state.convertedMonth.map(x => (x.profit = 0, x.credit = 0))
+        this.state.convertedMonth.forEach(x => { x.profit = 0; x.credit = 0 })
 
     }
 
@@ -59,13 +58,14 @@ class ContextImplementation extends Component {
         this.setState({ loggedInUser: user })
     }
 
+    getUserInfo = () => {
+        let userData = localStorage.getItem('user');
+        if (userData !== null) this.setState({ loggedInUser: userData })
+    }
+
 
     state = {
-        loggedInUser: {
-            userName: '',
-            createdAt: ''
-
-        },
+        loggedInUser: JSON.parse(window.sessionStorage.getItem('user')),
         thisYear: new Date().getFullYear(),
         thisMonth: new Date().getMonth(),
         logoutUser: this.logoutUser,
@@ -128,8 +128,11 @@ class ContextImplementation extends Component {
 
 
 
+
     render() {
         const { children } = this.props;
+        console.log(this.state.loggedInUser, 'logged in user')
+        console.log(localStorage.getItem('user'), 'how')
 
         return (
             <AAMContext.Provider value={this.state}>{children}</AAMContext.Provider>

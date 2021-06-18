@@ -12,6 +12,9 @@ import IconButton from '@material-ui/core/IconButton';
 import ApexAutoMoversService from '../service/ApexAutoMoversService';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { useHistory } from "react-router-dom";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import { useSnackbar } from 'notistack';
 
 
 
@@ -19,39 +22,18 @@ import { useHistory } from "react-router-dom";
 
 
 
-const styles = {
-    container: {
-        backgroundImage: `url(${loginbg})`,
-        height: '100vh',
-        backgroundPosition: '2200% 0%',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: "cover",
-    },
-    cardContainer: {
-        height: '40%',
-        width: '500px',
-        marginLeft: '30%',
-        zIndex: '2',
-        position: 'fixed',
-        top: '30%'
-    },
-    title: {
-        padding: '3%'
-    },
-    input: {
-        padding: '3%'
-    },
-    loginBtn: {
-        width: '45px',
-        color: 'green'
-    }
-}
+
+
 
 const LoginPage = props => {
     const service = new ApexAutoMoversService();
     const history = useHistory();
     const context = useContext(AAMContext);
+    const { enqueueSnackbar } = useSnackbar();
     const { setLoggedInUser } = context;
+    const theme = useTheme();
+
+    const medScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
     const [credentials, setCredentials] = useState({
         userName: '',
@@ -66,15 +48,20 @@ const LoginPage = props => {
     }
 
     const handleLogin = async () => {
+        setLoading(true)
+
         try {
-            setLoading(true)
 
             let res = await service.fetchLogin(credentials);
 
 
-
-            if (res.data.login !== false) {
+            console.log(res.data, 'login data')
+            if (res.status === 200) {
                 setLoggedInUser(res.data)
+                let strData = JSON.stringify(res.data)
+                sessionStorage.setItem('user', strData)
+
+                enqueueSnackbar(`Welcome ${res.data.userName}`, { variant: 'success' })
 
                 history.push('/create');
             }
@@ -82,18 +69,48 @@ const LoginPage = props => {
 
         } catch (error) {
             console.error(error)
+            enqueueSnackbar(`Sorry Wrong User Name or Password`, { variant: 'error' })
+
         } finally {
             setLoading(false)
         }
     }
 
+    const styles = {
+        container: {
+            backgroundImage: `url(${loginbg})`,
+            height: '100vh',
+            backgroundPosition: '2200% 0%',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: "cover",
+        },
+        cardContainer: {
+            height: '40%',
+            width: '500px',
+            marginLeft: medScreen ? '0%' : '30%',
+            zIndex: '2',
+            // top: '30%'
+            marginTop: '20%'
+        },
+        title: {
+            padding: '3%'
+        },
+        input: {
+            padding: '3%'
+        },
+        loginBtn: {
+            width: '45px',
+            color: 'green'
+        }
+    }
 
 
 
     return (
         <Container maxWidth='xl' style={styles.container}>
-            <Card style={styles.cardContainer}>
-                <Grid container justify='center' alignItems='center'>
+            <Grid container justify='center' alignItems='center'>
+                <Card style={styles.cardContainer}>
+
                     <Grid item xs={12} align='center' style={styles.title}>
                         {loading ? <LinearProgress /> : null}
                         <Typography variant='h4' >
@@ -124,17 +141,20 @@ const LoginPage = props => {
 
                         />
                     </Grid>
-                    <Grid >
+                    <Grid align='center' >
                         <IconButton style={styles.loginBtn} onClick={handleLogin}>
                             <ExitToAppIcon />
                         </IconButton>
                     </Grid>
-                </Grid>
+                </Card>
 
-            </Card>
+            </Grid>
+
 
         </Container>
     )
+
+
 }
 
 export default LoginPage

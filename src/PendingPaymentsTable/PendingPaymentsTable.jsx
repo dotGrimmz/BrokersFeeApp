@@ -22,10 +22,10 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Divider from '@material-ui/core/Divider';
 
 
+const service = new AAMService();
 
 
 const PendingPaymentsTable = props => {
-    const service = new AAMService();
     const history = useHistory();
 
     const [brokerFees, setBrokerFees] = useState([])
@@ -208,7 +208,7 @@ const PendingPaymentsTable = props => {
                         <TableFooter>
                             <TableRow>
                                 <TablePagination
-                                    rowsPerPageOptions={[8, 16]}
+                                    rowsPerPageOptions={[8]}
                                     count={brokerFees.length}
                                     rowsPerPage={rowsPerPage}
                                     page={page}

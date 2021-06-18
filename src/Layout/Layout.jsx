@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -16,6 +16,14 @@ import AssignmentTurnedInOutlinedIcon from '@material-ui/icons/AssignmentTurnedI
 import SupervisorAccountOutlinedIcon from '@material-ui/icons/SupervisorAccountOutlined';
 import AAMContext from '../context/AAMContext';
 import { useHistory } from "react-router-dom";
+import Hidden from '@material-ui/core/Hidden';
+import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from '@material-ui/core/IconButton';
+import { Menu } from '@material-ui/core';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+
+
 
 
 
@@ -25,10 +33,24 @@ const Layout = (props) => {
 
     const drawerWidth = '240px';
     const context = useContext(AAMContext);
-    const { loggedInUser, logoutUser } = context;
+    const { loggedInUser, logoutUser, setLoggedInUser } = context;
     const history = useHistory();
-
+    const theme = useTheme();
     const { children } = props;
+    const medScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
+    const [mobileOpen, setMobileOpen] = useState(false)
+
+    useEffect(() => {
+
+        const getLoggedInUser = () => {
+            if (sessionStorage.getItem('user') !== null) {
+                let logInData = JSON.parse(sessionStorage.getItem('user'));
+                setLoggedInUser(logInData)
+
+            }
+        }
+        getLoggedInUser()
+    }, [])
 
 
     const styles = {
@@ -48,6 +70,7 @@ const Layout = (props) => {
         drawer: {
             width: drawerWidth,
             flexShrink: 0,
+
         },
         drawerPaper: {
             width: drawerWidth,
@@ -59,22 +82,31 @@ const Layout = (props) => {
             flexGrow: 1,
         },
         root: {
-            background: "radial-gradient(ellipse at center," +
-                "#808080" +
-                " 0," +
-                "#000000" +
-                " 100%)",
-            height: '100vh',
+
+            height: '100%',
             flexGrow: 1,
+
+        },
+        menuBtn: {
+            display: medScreen ? 'flex' : 'none'
 
         }
     }
 
     const handleLogOut = () => {
-        history.push('/login')
+        window.sessionStorage.removeItem('user')
+        console.log(window.sessionStorage.getItem('user'), 'should be gone')
+
+        history.replace('/login');
         logoutUser()
 
     }
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen)
+    }
+
+    console.log(window.location.href.includes("/login"), 'heller')
 
 
     const menuLinks = [{
@@ -101,16 +133,23 @@ const Layout = (props) => {
             <CssBaseline />
             <AppBar style={styles.appbar}>
                 <Toolbar>
+                    <IconButton edge='start' onClick={() => setMobileOpen(!mobileOpen)}>
+                        <MenuIcon style={styles.menuBtn} />
+
+                    </IconButton>
                     <Typography variant="h6" style={styles.title}>
                         AAM Brokers Fee Application
                         </Typography>
-                    {loggedInUser?.userName !== '' ? <Button onClick={() => handleLogOut()} color="inherit"> Log Out</Button> : null}
-                </Toolbar>
-            </AppBar>
-            <Drawer
-                style={styles.drawer}
-                variant="permanent"
+                    {loggedInUser !== null ? <Button onClick={() => handleLogOut()} color="inherit"> Log Out</Button> : null}
 
+                </Toolbar>
+
+            </AppBar>
+
+            //////
+            {!medScreen && <Drawer
+                style={styles.drawer}
+                variant='permanent'
                 classes={{
                     paper: '240',
                 }}
@@ -118,7 +157,7 @@ const Layout = (props) => {
                 <Toolbar />
                 <div style={styles.drawerContainer} >
 
-                    {loggedInUser?.userName !== '' ?
+                    {loggedInUser !== null ?
                         < List >
                             {
                                 menuLinks.map((menuLink) => (
@@ -141,7 +180,46 @@ const Layout = (props) => {
                     }
                 </div>
 
-            </Drawer>
+            </Drawer>}
+
+
+            ///// 
+            {medScreen && <Drawer
+                style={styles.drawer}
+                variant={window.location.href.includes('/login') ? 'temporary' : 'persistent'}
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                classes={{
+                    paper: '240',
+                }}
+            >
+                <Toolbar />
+                <div style={styles.drawerContainer} >
+
+                    {loggedInUser !== null ?
+                        < List >
+                            {
+                                menuLinks.map((menuLink) => (
+                                    <ListItem button key={menuLink.label} onClick={menuLink.routeTo}>
+                                        <ListItemIcon>{menuLink.icon}</ListItemIcon>
+                                        <ListItemText primary={menuLink.label} />
+                                    </ListItem>
+                                ))
+                            }
+                        </List> : <List style={{ 'width': '225px' }}>
+                            {['Login'].map((text) => (
+                                <ListItem button key={text} onClick={() => history.push('/login')} >
+                                    <ListItemIcon>
+                                        <SupervisorAccountOutlinedIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    }
+                </div>
+
+            </Drawer>}
             <Container maxWidth='lg' style={styles.content}>
                 {children}
             </Container>

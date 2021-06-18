@@ -43,8 +43,41 @@ const AdminView = props => {
     const [loading, setLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
-
     useEffect(() => {
+
+        const getTotalDue = (data) => {
+            let arr = []
+            data.forEach((x) => {
+
+                arr.push(parseInt(x.receivable))
+            });
+            let newArr = arr.reduce((total, num) => total + num)
+            return newArr
+
+        }
+
+        const getYearlyEarnings = data => {
+            let arr = []
+            data.forEach(x => {
+                if (new Date(x.deliveryDate).getFullYear() === thisYear) {
+                    arr.push(parseInt(x.receivable))
+                }
+            });
+            return arr.reduce((total, num) => total + num)
+
+        }
+
+        const getRollingThreeMonthEarnings = data => {
+            let arr = [];
+            data.forEach(x => {
+                if (new Date(x.deliveryDate).getMonth() >= thisMonth - 3) {
+                    arr.push(parseInt(x.receivable))
+                }
+            });
+
+            return arr.reduce((total, num) => total + num)
+
+        }
 
         const fetchFees = async () => {
             setLoading(true)
@@ -68,7 +101,7 @@ const AdminView = props => {
         fetchFees();
         return clearTableData()
 
-    }, []);
+    }, [createTableData, clearTableData, thisMonth, thisYear]);
 
     useEffect(() => {
         const fetchUserProfiles = async () => {
@@ -85,42 +118,11 @@ const AdminView = props => {
         }
         fetchUserProfiles()
 
-    }, [])
+    }, [enqueueSnackbar, loggedInUser])
 
 
-    const getTotalDue = (data) => {
-        let arr = []
-        data.map((x) => {
 
-            arr.push(parseInt(x.receivable))
-        });
-        let newArr = arr.reduce((total, num) => total + num)
-        return newArr
 
-    }
-
-    const getYearlyEarnings = data => {
-        let arr = []
-        data.map(x => {
-            if (new Date(x.deliveryDate).getFullYear() === thisYear) {
-                arr.push(parseInt(x.receivable))
-            }
-        });
-        return arr.reduce((total, num) => total + num)
-
-    }
-
-    const getRollingThreeMonthEarnings = data => {
-        let arr = [];
-        data.map(x => {
-            if (new Date(x.deliveryDate).getMonth() >= thisMonth - 3) {
-                arr.push(parseInt(x.receivable))
-            }
-        });
-
-        return arr.reduce((total, num) => total + num)
-
-    }
 
     const handleValueChange = e => {
         let obj = { ...user, [e.target.name]: e.target.value }
@@ -160,7 +162,7 @@ const AdminView = props => {
 
     const handleGeneratePassword = () => {
         let date = new Date().getTime()
-        setUser({ password: `apex_${date}` });
+        setUser({ password: `apex_${date}`, userName: '' });
 
     }
 
@@ -252,7 +254,7 @@ const AdminView = props => {
                             yearlyRevenue={yearlyRevenue}
                             paymentAmtDue={paymentAmountDue}
                             rollingThreeMonthRevenue={rollingThreeMonthRevenue}
-                            userName={loggedInUser.userName}
+                            userName={loggedInUser?.userName}
                             setMode={setMode}
                             showEmployeePanel={showEmployeePanel}
                         />

@@ -21,14 +21,14 @@ import CredentialModal from './CredentialModal.jsx';
 const UserPanel = props => {
 
 
-    const { handleValueChange, mode, handleAddNewUser, savedUser, handleGeneratePassword, userProfiles, handleDeleteUser, handleUpdateCredentials } = props;
+    const { handleValueChange, userName, password, mode, handleAddNewUser, savedUser, handleGeneratePassword, userProfiles, handleDeleteUser, handleUpdateCredentials } = props;
     const [credentialModal, setCredentialModal] = useState(false);
 
     const context = useContext(AAMContext);
     const { loggedInUser } = context;
 
     const [credentials, setCredentials] = useState({
-        userName: loggedInUser.userName || '',
+        userName: loggedInUser?.userName || '',
         password: ''
     })
 
@@ -123,7 +123,7 @@ const UserPanel = props => {
                         <TextField
                             onChange={handleValueChange}
                             name='userName'
-                            value={credentials.userName}
+                            value={userName}
                             variant='outlined'
                             label='Set Username'
                         />
@@ -132,7 +132,7 @@ const UserPanel = props => {
                         <TextField
                             onChange={handleValueChange}
                             name='password'
-                            value={credentials.password}
+                            value={password}
                             variant='outlined'
                             label='Set Password'
                         />

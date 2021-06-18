@@ -24,10 +24,10 @@ import Divider from '@material-ui/core/Divider';
 
 
 
+const service = new AAMService();
 
 const PaymentsReceivedTable = props => {
 
-    const service = new AAMService();
     const history = useHistory();
 
     const [paidBrokerFees, setPaidBrokerFees] = useState([])
@@ -206,7 +206,7 @@ const PaymentsReceivedTable = props => {
                     <TableFooter>
                         <TableRow>
                             <TablePagination
-                                rowsPerPageOptions={[8, 16]}
+                                rowsPerPageOptions={[8]}
                                 // colSpan={3}
                                 count={paidBrokerFees.length}
                                 rowsPerPage={rowsPerPage}

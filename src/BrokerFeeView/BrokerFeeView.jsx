@@ -19,6 +19,8 @@ import { useSnackbar } from 'notistack';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import CarrierModal from '../CarrierModal/CarrierModal';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 const service = new ApexAutoMoversService();
 
@@ -27,6 +29,10 @@ const service = new ApexAutoMoversService();
 const BrokerFeeView = (props) => {
     const { match } = props;
     const { enqueueSnackbar } = useSnackbar();
+
+    const theme = useTheme();
+
+    const medScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
     const context = useContext(AAMContext);
     const { userName, years } = context;
@@ -241,12 +247,13 @@ const BrokerFeeView = (props) => {
     const styles = {
         card: {
             width: '100%',
-            minHeight: '500px',
-            marginTop: '5%',
-            marginLeft: '10%'
+            height: 'auto',
+            marginTop: '2%',
+            marginLeft: medScreen ? '0%' : '7%'
         },
         title: {
-            marginTop: '7%'
+            marginBottom: '0%',
+            marginTop: medScreen ? '7%' : '2%'
         },
         input: {
             padding: '4%',
@@ -261,7 +268,19 @@ const BrokerFeeView = (props) => {
         formControl: {
             margin: "2%",
             minWidth: 120,
+        },
+        firstSection: {
+            backgroundColor: 'lightblue',
+            border: '1px solid black',
+            boxShadow: '-1px 1px #77aff',
+        },
+        vehSection: {
+            backgroundColor: 'lightblue',
+            margin: '2%',
+            border: '1px solid black',
+            boxShadow: '-1px 1px #77aff',
         }
+
     }
 
 
@@ -277,46 +296,49 @@ const BrokerFeeView = (props) => {
                     {loading ? <LinearProgress /> : null}
                     <FormControl>
                         <Grid container justify='center'>
-                            <Grid item xs={4} style={styles.input} >
-                                <Grid container direction='column' >
-                                    <Grid item>
-                                        <TextField
-                                            fullWidth
-                                            label='Order ID'
-                                            variant='standard'
-                                            name='orderId'
-                                            onChange={handleValueChange}
-                                            value={brokerObj.orderId}
+                            <Grid item xs={12} md={4} style={styles.input} >
+                                <Card style={styles.vehSection} raised>
+                                    <Grid container direction='column' >
+                                        <Grid item style={{ 'padding': '2%' }}>
+                                            <TextField
+                                                fullWidth
+                                                label='Order ID'
+                                                variant='standard'
+                                                name='orderId'
+                                                onChange={handleValueChange}
+                                                value={brokerObj.orderId}
 
-                                        />
+                                            />
+                                        </Grid>
+                                        <Grid item style={{ 'padding': '2%' }}>
+                                            <TextField
+                                                fullWidth
+                                                label='Buyer #'
+                                                variant='standard'
+                                                name='buyerNum'
+                                                onChange={handleValueChange}
+                                                value={brokerObj.buyerNum}
+
+                                            />
+                                        </Grid>
+                                        <Grid item style={{ 'padding': '2%' }}>
+                                            <TextField
+                                                fullWidth
+                                                label='Lot #'
+                                                variant='standard'
+                                                name='lotNum'
+                                                onChange={handleValueChange}
+                                                value={brokerObj.lotNum}
+
+                                            />
+                                        </Grid>
+
                                     </Grid>
-                                    <Grid item>
-                                        <TextField
-                                            fullWidth
-                                            label='Buyer #'
-                                            variant='standard'
-                                            name='buyerNum'
-                                            onChange={handleValueChange}
-                                            value={brokerObj.buyerNum}
+                                </Card>
 
-                                        />
-                                    </Grid>
-                                    <Grid item>
-                                        <TextField
-                                            fullWidth
-                                            label='Lot #'
-                                            variant='standard'
-                                            name='lotNum'
-                                            onChange={handleValueChange}
-                                            value={brokerObj.lotNum}
-
-                                        />
-                                    </Grid>
-
-                                </Grid>
                             </Grid>
 
-                            <Grid item xs={4} style={styles.input}>
+                            <Grid item xs={12} md={4} style={styles.input}>
                                 {newCarrier ? <TextField
                                     select
                                     fullWidth
@@ -354,78 +376,82 @@ const BrokerFeeView = (props) => {
                                 </Button>
 
                             </Grid>
-                            <Grid item xs={4} style={styles.input} align='center'>
-                                {!newVehicle ? <Grid container direction='column' alignItems='center'>
-                                    <Typography>
-                                        Vehicle: {`${brokerObj?.vehInfo?.vehYear} ${brokerObj?.vehInfo?.vehMake} ${brokerObj?.vehInfo.vehModel}`}
-                                    </Typography>  </Grid> : <Grid container direction='column' alignItems='flex-start'>
-                                        <Grid item >
-                                            <FormControl style={styles.formControl}>
-                                                <InputLabel>Year</InputLabel>
-                                                <Select
-                                                    name='vehYear'
-                                                    value={vehYear}
-                                                    onChange={(e) => setVehYear(e.target.value)}
-                                                >
-                                                    {years.map((x, index) => {
-                                                        return (
-                                                            <MenuItem key={index} value={x}>
-                                                                {x}
-                                                            </MenuItem>
-                                                        );
-                                                    })}
-                                                </Select>
-                                            </FormControl>
-                                        </Grid>
-                                        <Grid item>
-                                            <FormControl
-                                                style={styles.formControl}
-                                                disabled={vehYear === ""}
-                                            >
-                                                <InputLabel>Make</InputLabel>
-                                                <Select
-                                                    value={vehMake}
-                                                    name='vehMake'
-                                                    onChange={(e) => setVehMake(e.target.value)}
-                                                >
-                                                    {vehYear !== "" &&
-                                                        vehicleMakes.map((x, index) => {
+                            <Grid item xs={12} md={4} style={styles.input} align='center'>
+                                <Card raised style={styles.vehSection}>
+
+                                    {!newVehicle ? <Grid container direction='column' alignItems='center'>
+                                        <Typography>
+                                            Vehicle: {`${brokerObj?.vehInfo?.vehYear} ${brokerObj?.vehInfo?.vehMake} ${brokerObj?.vehInfo.vehModel}`}
+                                        </Typography>  </Grid> : <Grid container direction='column' alignItems='center'>
+                                            <Grid item >
+                                                <FormControl style={styles.formControl}>
+                                                    <InputLabel>Year</InputLabel>
+                                                    <Select
+                                                        name='vehYear'
+                                                        value={vehYear}
+                                                        onChange={(e) => setVehYear(e.target.value)}
+                                                    >
+                                                        {years.map((x, index) => {
                                                             return (
                                                                 <MenuItem key={index} value={x}>
                                                                     {x}
                                                                 </MenuItem>
                                                             );
                                                         })}
-                                                </Select>
-                                            </FormControl>
-                                        </Grid>
-                                        <Grid item>
-                                            <FormControl
-                                                style={styles.formControl}
-                                                disabled={vehMake === ""}
-                                            >
-                                                <InputLabel>Model</InputLabel>
-                                                <Select
-                                                    value={vehModel}
-                                                    name='vehModel'
-                                                    onChange={(e) => setVehModel(e.target.value)}
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item>
+                                                <FormControl
+                                                    style={styles.formControl}
+                                                    disabled={vehYear === ""}
                                                 >
-                                                    {vehMake !== "" &&
-                                                        vehYear !== "" &&
-                                                        vehicleModels.map((x, index) => {
-                                                            return (
-                                                                <MenuItem key={index} value={x}>
-                                                                    {x}
-                                                                </MenuItem>
-                                                            );
-                                                        })}
-                                                </Select>
-                                            </FormControl>
-                                        </Grid>
-                                    </Grid>}
-                                <Button align='center' style={{ 'margin': '1%' }} variant='contained' color='secondary' onClick={() => toggleNewVehicle(!newVehicle)}>
-                                    {newVehicle ? "Original Vehicle" : "Update Vehicle"}
-                                </Button>
+                                                    <InputLabel>Make</InputLabel>
+                                                    <Select
+                                                        value={vehMake}
+                                                        name='vehMake'
+                                                        onChange={(e) => setVehMake(e.target.value)}
+                                                    >
+                                                        {vehYear !== "" &&
+                                                            vehicleMakes.map((x, index) => {
+                                                                return (
+                                                                    <MenuItem key={index} value={x}>
+                                                                        {x}
+                                                                    </MenuItem>
+                                                                );
+                                                            })}
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                            <Grid item>
+                                                <FormControl
+                                                    style={styles.formControl}
+                                                    disabled={vehMake === ""}
+                                                >
+                                                    <InputLabel>Model</InputLabel>
+                                                    <Select
+                                                        value={vehModel}
+                                                        name='vehModel'
+                                                        onChange={(e) => setVehModel(e.target.value)}
+                                                    >
+                                                        {vehMake !== "" &&
+                                                            vehYear !== "" &&
+                                                            vehicleModels.map((x, index) => {
+                                                                return (
+                                                                    <MenuItem key={index} value={x}>
+                                                                        {x}
+                                                                    </MenuItem>
+                                                                );
+                                                            })}
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
+                                        </Grid>}
+                                    <Button align='center' style={{ 'margin': '1%' }} variant='contained' color='secondary' onClick={() => toggleNewVehicle(!newVehicle)}>
+                                        {newVehicle ? "Original Vehicle" : "Update Vehicle"}
+                                    </Button>
+                                </Card>
+
                             </Grid>
 
                             <Grid item xs={12} >
@@ -461,19 +487,23 @@ const BrokerFeeView = (props) => {
                             <Grid item xs={12}>
                                 <Divider style={styles.divider} />
                             </Grid>
-                            <Grid item xs={8} style={styles.input}>
-                                <TextField
-                                    fullWidth
-                                    multiline
-                                    label='Comments'
-                                    variant='outlined'
-                                    name='comments'
-                                    onChange={handleValueChange}
-                                    value={brokerObj.comments}
-                                    rowsMax={4}
-                                />
+                            <Grid item xs={12} md={8} style={styles.input}>
+                                <Card raised style={styles.firstSection}>
+
+                                    <TextField
+                                        fullWidth
+                                        multiline
+                                        label='Comments'
+                                        variant='outlined'
+                                        name='comments'
+                                        onChange={handleValueChange}
+                                        value={brokerObj.comments}
+                                        rowsMax={4}
+                                        rows={4}
+                                    />
+                                </Card>
                             </Grid>
-                            <Grid item xs={4} style={styles.input}>
+                            <Grid item xs={12} md={4} style={styles.input}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
