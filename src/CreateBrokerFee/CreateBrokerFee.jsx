@@ -79,16 +79,18 @@ const CreateBrokerFee = () => {
 
 
     useEffect(() => {
+        let mounted = true;
         const fetchCarriers = async () => {
             try {
                 let res = await service.getCarriers();
-                if (res.status === 200) setCarrierList(res.data);
+                if (res.status === 200 && mounted) setCarrierList(res.data);
             } catch (err) {
                 console.error('could not fetch carriers');
             }
 
         }
         fetchCarriers()
+        return () => mounted = false
     }, []);
 
     useEffect(() => {

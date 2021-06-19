@@ -21,13 +21,14 @@ import { useHistory } from "react-router-dom";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Divider from '@material-ui/core/Divider';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import moment from 'moment';
 
 
 
 const service = new AAMService();
 
 
-const PendingPaymentsTable = props => {
+const PendingPaymentsTable = () => {
     const history = useHistory();
 
     const [brokerFees, setBrokerFees] = useState([])
@@ -70,6 +71,7 @@ const PendingPaymentsTable = props => {
 
     }, []);
 
+    console.log(brokerFees)
 
     const styles = {
         root: {
@@ -87,6 +89,12 @@ const PendingPaymentsTable = props => {
             overflow: 'auto',
             height: 'auto',
             maxHeight: '800px'
+        },
+        divider: {
+            padding: '.5%',
+            backgroundColor: 'blue',
+            margin: '.3%',
+            width: '100%'
         }
     }
 
@@ -118,6 +126,8 @@ const PendingPaymentsTable = props => {
         const handleLastPageButtonClick = (event) => {
             onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
         };
+
+
 
         return (
             <div className={classes.root}>
@@ -187,7 +197,11 @@ const PendingPaymentsTable = props => {
                                             <Grid item xs={12}>
                                                 {row.carrier.name} - {row.buyerNum}
                                             </Grid>
-                                            <Divider orientation="vertical" style={{ 'padding': '.5%', 'backgroundColor': 'blue', 'margin': '.3%' }} />
+                                            <Divider orientation="vertical" style={{
+                                                'padding': '.5%', 'backgroundColor':
+                                                    moment(row.deliveryDate) <= moment().subtract(7, 'days') ? 'red' : moment(row.deliveryDate) >= moment() ? 'green' : 'orange',
+                                                'margin': '.3%', 'width': '100%'
+                                            }} />
 
                                             <Grid item>
                                                 {row.carrier.contact} {row.carrier.phoneNumber}
@@ -197,7 +211,7 @@ const PendingPaymentsTable = props => {
                                     </TableCell>
                                     <TableCell align="center">{row.orderId}</TableCell>
                                     <TableCell align="center">{row.vehInfo.vehYear + " " + row.vehInfo.vehMake + " " + row.vehInfo.vehModel}</TableCell>
-                                    <TableCell align="center">{new Date(row.deliveryDate).toDateString()}</TableCell>
+                                    <TableCell align="center">{moment(row.deliveryDate).format('LL')}</TableCell>
                                     <TableCell align="center">{row.receivable}</TableCell>
                                     <TableCell align="center">{row.comments}</TableCell>
                                 </TableRow>

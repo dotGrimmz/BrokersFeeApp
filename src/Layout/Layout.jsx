@@ -20,8 +20,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
+
 
 
 
@@ -50,7 +49,7 @@ const Layout = (props) => {
             }
         }
         getLoggedInUser()
-    }, [])
+    }, [setLoggedInUser])
 
 
     const styles = {
@@ -121,19 +120,31 @@ const Layout = (props) => {
     const menuLinks = [{
         label: 'Add Broker Fee',
         icon: <PostAddOutlinedIcon />,
-        routeTo: () => history.push('/create')
+        routeTo: () => {
+            history.push('/create')
+            setMobileOpen(false)
+        }
     }, {
         label: 'Pending Payments',
         icon: <ReceiptOutlinedIcon />,
-        routeTo: () => history.push('/pending')
+        routeTo: () => {
+            history.push('/pending')
+            setMobileOpen(false)
+        }
     }, {
         label: 'Payments Recieved',
         icon: <AssignmentTurnedInOutlinedIcon />,
-        routeTo: () => history.push('/paid')
+        routeTo: () => {
+            history.push('/paid')
+            setMobileOpen(false)
+        }
     }, {
         label: 'Admin',
         icon: <SupervisorAccountOutlinedIcon />,
-        routeTo: () => history.push('/admin')
+        routeTo: () => {
+            history.push('/admin')
+            setMobileOpen(false)
+        }
     }]
 
     return (
@@ -230,33 +241,7 @@ const Layout = (props) => {
             <Container maxWidth='lg' style={styles.content}>
                 {children}
             </Container>
-            <footer style={styles.footer}>
-                <Grid container justify='flex-end' display='row'>
-                    <Grid item xs={10} align='left'>
-                        <Link target="_blank" href="https://www.centraldispatch.com/" variant='caption' style={styles.links} >
-                            Central Dispactch
-                        </Link>
-                        <Link target="_blank" href="https://www.google.com/search?q=iaa" variant='caption' style={styles.links} >
-                            IAA
-                        </Link>
 
-                        <Link target="_blank" href="https://www.google.com/search?q=copart" variant='caption' style={styles.links} >
-                            CoPart
-                        </Link>
-
-
-
-                    </Grid>
-                    <Grid item xs={2} align='right'>
-                        &copy; {1900 + new Date().getYear()} , Powered by <b>JusGrimmz</b>
-
-                    </Grid>
-
-
-                </Grid>
-
-
-            </footer>
         </div >
     )
 }

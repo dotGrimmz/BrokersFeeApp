@@ -49,13 +49,11 @@ const LoginPage = props => {
 
     const handleLogin = async () => {
         setLoading(true)
-
         try {
 
             let res = await service.fetchLogin(credentials);
 
 
-            console.log(res.data, 'login data')
             if (res.status === 200) {
                 setLoggedInUser(res.data)
                 let strData = JSON.stringify(res.data)

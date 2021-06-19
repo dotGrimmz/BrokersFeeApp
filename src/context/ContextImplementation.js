@@ -26,6 +26,7 @@ class ContextImplementation extends Component {
 
     createTableData = (data) => {
         //iterate though each broker fee
+
         data.forEach((x) => {
             // get the month for each paid broker fee
             let month = new Date(x.deliveryDate).getMonth()
@@ -34,6 +35,7 @@ class ContextImplementation extends Component {
                 //if the month number refrences the month obj
                 if (this.state.convertedMonth[i][month]) {
                     //add up the sum o
+
                     if (x.paid) this.state.convertedMonth[i].profit += parseInt(x.receivable)
                     if (x.paid === false) this.state.convertedMonth[i].credit += parseInt(x.receivable)
 
@@ -131,8 +133,7 @@ class ContextImplementation extends Component {
 
     render() {
         const { children } = this.props;
-        console.log(this.state.loggedInUser, 'logged in user')
-        console.log(localStorage.getItem('user'), 'how')
+
 
         return (
             <AAMContext.Provider value={this.state}>{children}</AAMContext.Provider>
