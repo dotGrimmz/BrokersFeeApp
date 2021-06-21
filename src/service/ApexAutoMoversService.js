@@ -17,35 +17,35 @@ class ApexAutoMoversService {
     }
 
     fetchLogin(body) {
-        return this.instance.post('http://localhost:5000/apexautomovers/login', body)
+        return this.instance.post('https://git.heroku.com/bfaapi.git/login', body)
     }
 
     postFee(body) {
-        return this.instance.post('http://localhost:5000/apexautomovers/create', body);
+        return this.instance.post('https://git.heroku.com/bfaapi.git/create', body);
     }
 
     getAllBFAs() {
-        return this.instance.get('http://localhost:5000/apexautomovers/pending')
+        return this.instance.get('https://git.heroku.com/bfaapi.git/pending')
     }
 
     updateBFA(id, body) {
-        return this.instance.put(`http://localhost:5000/apexautomovers/bfaview/${id}`, body);
+        return this.instance.put(`https://git.heroku.com/bfaapi.git/bfaview/${id}`, body);
     }
 
     fetchBrokerFee(id) {
-        return this.instance.get(`http://localhost:5000/apexautomovers/bfaview/${id}`);
+        return this.instance.get(`https://git.heroku.com/bfaapi.git/bfaview/${id}`);
     }
 
     getCarriers() {
-        return this.instance.get('http://localhost:5000/apexautomovers/carrier');
+        return this.instance.get('https://git.heroku.com/bfaapi.git/carrier');
     }
 
     deleteCarrier(id) {
-        return this.instance.delete(`http://localhost:5000/apexautomovers/carrier/${id}`);
+        return this.instance.delete(`https://git.heroku.com/bfaapi.git/carrier/${id}`);
     }
 
     createCarrier(body) {
-        return this.instance.post('http://localhost:5000/apexautomovers/carrier', body);
+        return this.instance.post('https://git.heroku.com/bfaapi.git/carrier', body);
     }
 
     getVehMake(year) {
@@ -57,19 +57,19 @@ class ApexAutoMoversService {
     }
 
     createNewUser(body) {
-        return this.instance.post('http://localhost:5000/apexautomovers/admin', body)
+        return this.instance.post('https://git.heroku.com/bfaapi.git/admin', body)
     }
 
     getAllUserProfiles() {
-        return this.instance.get('http://localhost:5000/apexautomovers/admin/profiles');
+        return this.instance.get('https://git.heroku.com/bfaapi.git/admin/profiles');
     }
 
     deleteUserProfile(id) {
-        return this.instance.delete(`http://localhost:5000/apexautomovers/admin/${id}`);
+        return this.instance.delete(`https://git.heroku.com/bfaapi.git/admin/${id}`);
     }
 
     updateUserProfile(id, body) {
-        return this.instance.put(`http://localhost:5000/apexautomovers/admin/${id}`, body);
+        return this.instance.put(`https://git.heroku.com/bfaapi.git/admin/${id}`, body);
     }
 }
 
