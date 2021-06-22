@@ -87,7 +87,7 @@ const AdminView = props => {
         const fetchFees = async () => {
             setLoading(true)
             try {
-                let res = await service.getAllBFAs()
+                let res = await service.getAllBFAs({})
                 let pendingBFAs = res.data.filter(x => !x.paid);
                 let paidBFAs = res.data.filter(x => x.paid)
                 setPaymentAmtDue(getTotalDue(pendingBFAs))
@@ -111,7 +111,7 @@ const AdminView = props => {
     useEffect(() => {
         const fetchUserProfiles = async () => {
             try {
-                let res = await service.getAllUserProfiles()
+                let res = await service.getAllUserProfiles({})
                 if (res.status === 200) {
                     let filtered = res.data.filter(x => loggedInUser.userName !== x.userName)
                     setUserProfiles(filtered)
@@ -137,7 +137,7 @@ const AdminView = props => {
     const handleAddNewUser = async () => {
         let clear = { userName: '', password: '' }
         try {
-            let res = await service.createNewUser(user)
+            let res = await service.createNewUser({}, user)
             if (res.status === 200) {
                 enqueueSnackbar('Successfully Created New User', { variant: 'success' });
                 setSavedUser(res.data)
@@ -154,7 +154,7 @@ const AdminView = props => {
 
     const fetchUserProfiles = async () => {
         try {
-            let res = await service.getAllUserProfiles()
+            let res = await service.getAllUserProfiles({})
             if (res.status === 200) {
                 let filtered = res.data.filter(x => loggedInUser.userName !== x.userName)
                 setUserProfiles(filtered)
@@ -173,7 +173,7 @@ const AdminView = props => {
 
     const handleDeleteUser = async (id) => {
         try {
-            let res = await service.deleteUserProfile(id);
+            let res = await service.deleteUserProfile({}, id);
             if (res.status === 200) {
                 enqueueSnackbar('Successfully Deleted User', { variant: 'success' });
                 fetchUserProfiles()
@@ -194,7 +194,7 @@ const AdminView = props => {
 
     const handleUpdateCredentials = async (credentials) => {
         try {
-            let res = await service.updateUserProfile(loggedInUser._id, credentials)
+            let res = await service.updateUserProfile({}, loggedInUser._id, credentials)
 
             if (res.status === 200) enqueueSnackbar('Successfully Updated Profile', { variant: 'success' });
 

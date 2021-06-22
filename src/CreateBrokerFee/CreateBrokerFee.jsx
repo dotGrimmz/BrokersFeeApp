@@ -189,7 +189,7 @@ const CreateBrokerFee = () => {
         }
         try {
 
-            await service.postFee(completedBrokerFee);
+            await service.postFee({}, completedBrokerFee);
             history.push('/pending');
 
             enqueueSnackbar("Broker Fee Created!", { variant: 'success' })
@@ -210,7 +210,7 @@ const CreateBrokerFee = () => {
     const addCarrier = async () => {
 
         try {
-            let res = await service.createCarrier(carrierObj)
+            let res = await service.createCarrier({}, carrierObj)
             if (res.status === 200) {
                 enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
                 fetchCarriers()
@@ -226,7 +226,7 @@ const CreateBrokerFee = () => {
 
     const handleDeleteCarrier = async (id) => {
         try {
-            await service.deleteCarrier(id)
+            await service.deleteCarrier({}, id)
             enqueueSnackbar('Successfully Deleted Broker', { variant: 'success' });
             fetchCarriers()
 

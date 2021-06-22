@@ -6,70 +6,73 @@ class ApexAutoMoversService {
     constructor(params) {
         if (params) {
             this.instance = axios.create({
+                timeout: params.timeout ? params.timeout : 10000,
                 headers: params.headers
                     ? params.headers
                     : {
                         "Access-Control-Allow-Origin": "*",
-                        "Content-Type": "multipart/form-data",
+                        "Content-Type": "application/json",
                     },
             });
         } else this.instance = axios;
     }
 
-    fetchLogin(body) {
-        return this.instance.post('https://git.heroku.com/bfaapi.git/login', body, {})
+    fetchLogin(params, body) {
+
+        console.log(params)
+        return this.instance.post('https://git.heroku.com/bfaapi.git/login', body, params)
     }
 
-    postFee(body) {
-        return this.instance.post('https://git.heroku.com/bfaapi.git/create', body, {});
+    postFee(params, body) {
+        return this.instance.post('https://git.heroku.com/bfaapi.git/create', body, params);
     }
 
-    getAllBFAs() {
-        return this.instance.get('https://git.heroku.com/bfaapi.git/pending', {})
+    getAllBFAs(params) {
+        return this.instance.get('https://git.heroku.com/bfaapi.git/pending', params)
     }
 
-    updateBFA(id, body) {
-        return this.instance.put(`https://git.heroku.com/bfaapi.git/bfaview/${id}`, body, {});
+    updateBFA(params, id, body) {
+        return this.instance.put(`https://git.heroku.com/bfaapi.git/bfaview/${id}`, body, params);
     }
 
-    fetchBrokerFee(id) {
-        return this.instance.get(`https://git.heroku.com/bfaapi.git/bfaview/${id}`, {});
+    fetchBrokerFee(params, id) {
+        return this.instance.get(`https://git.heroku.com/bfaapi.git/bfaview/${id}`, params);
     }
 
-    getCarriers() {
-        return this.instance.get('https://git.heroku.com/bfaapi.git/carrier', {});
+    getCarriers(params) {
+        return this.instance.get('https://git.heroku.com/bfaapi.git/carrier', params);
     }
 
-    deleteCarrier(id) {
-        return this.instance.delete(`https://git.heroku.com/bfaapi.git/carrier/${id}`, {});
+    deleteCarrier(params, id) {
+        return this.instance.delete(`https://git.heroku.com/bfaapi.git/carrier/${id}`, params);
     }
 
-    createCarrier(body) {
-        return this.instance.post('https://git.heroku.com/bfaapi.git/carrier', body), {};
+    createCarrier(params, body) {
+        return this.instance.post('https://git.heroku.com/bfaapi.git/carrier', body, params);
     }
 
     getVehMake(year) {
-        return this.instance.get(`https://done.ship.cars/makes/?year=${year}`, {})
+        return this.instance.get(`https://done.ship.cars/makes/?year=${year}`)
     }
 
     getVehModel(year, make) {
-        return this.instance.get(`https://done.ship.cars/models/?year=${year}&make=${make}`, {})
+        return this.instance.get(`https://done.ship.cars/models/?year=${year}&make=${make}`)
     }
 
-    createNewUser(body) {
-        return this.instance.post('https://git.heroku.com/bfaapi.git/admin', body, {})
+    createNewUser(params, body) {
+        return this.instance.post('https://git.heroku.com/bfaapi.git/admin', body, params)
     }
 
-    getAllUserProfiles() {
-        return this.instance.get('https://git.heroku.com/bfaapi.git/admin/profiles', {});
+    getAllUserProfiles(params) {
+        return this.instance.get('https://git.heroku.com/bfaapi.git/admin/profiles', params);
     }
 
-    deleteUserProfile(id) {
-        return this.instance.delete(`https://git.heroku.com/bfaapi.git/admin/${id}`, {});
+    deleteUserProfile(params, id) {
+        return this.instance.delete(`https://git.heroku.com/bfaapi.git/admin/${id}`, params);
     }
 
-    updateUserProfile(id, body) {
-        return this.instance.put(`https://git.heroku.com/bfaapi.git/admin/${id}`, body, {});
+    updateUserProfile(params, id, body) {
+        return this.instance.put(`https://git.heroku.com/bfaapi.git/admin/${id}`, body, params);
     }
 }
 

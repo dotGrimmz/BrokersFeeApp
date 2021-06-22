@@ -51,7 +51,7 @@ const LoginPage = props => {
         setLoading(true)
         try {
 
-            let res = await service.fetchLogin(credentials);
+            let res = await service.fetchLogin({}, credentials);
 
 
             if (res.status === 200) {

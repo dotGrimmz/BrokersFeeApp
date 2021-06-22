@@ -81,7 +81,7 @@ const BrokerFeeView = (props) => {
     useEffect(() => {
         const findBrokerFee = async (selectedId) => {
             try {
-                let res = await service.fetchBrokerFee(selectedId);
+                let res = await service.fetchBrokerFee({}, selectedId);
                 setBrokerObj(res.data);
                 setSelectedDate(res.data.deliveryDate)
             } catch (err) {
@@ -171,7 +171,7 @@ const BrokerFeeView = (props) => {
 
     const findBrokerFee = async (selectedId) => {
         try {
-            let res = await service.fetchBrokerFee(selectedId);
+            let res = await service.fetchBrokerFee({}, selectedId);
             setBrokerObj(res.data);
             setSelectedDate(res.data.deliveryDate)
         } catch (err) {
@@ -183,7 +183,7 @@ const BrokerFeeView = (props) => {
     const addCarrier = async () => {
 
         try {
-            let res = await service.createCarrier(carrierObj)
+            let res = await service.createCarrier({}, carrierObj)
             if (res.status === 200) {
                 enqueueSnackbar('Successfully Added Carrier', { variant: 'success' })
                 fetchCarriers()
@@ -210,7 +210,7 @@ const BrokerFeeView = (props) => {
 
         setLoading(true)
         try {
-            let res = await service.updateBFA(id, updatedBrokerFee);
+            let res = await service.updateBFA({}, id, updatedBrokerFee);
             if (res.status === 200) {
                 setBrokerObj(res.data)
                 enqueueSnackbar('Successfully Updated Broker Fee', { variant: 'success' })
@@ -233,7 +233,7 @@ const BrokerFeeView = (props) => {
 
     const handleDeleteCarrier = async (id) => {
         try {
-            await service.deleteCarrier(id)
+            await service.deleteCarrier({}, id)
             enqueueSnackbar('Successfully Deleted Broker', { variant: 'success' });
             fetchCarriers()
 

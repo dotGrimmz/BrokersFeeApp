@@ -57,7 +57,7 @@ const PaymentsReceivedTable = props => {
         const fetchFees = async () => {
             setLoading(true)
             try {
-                let res = await service.getAllBFAs()
+                let res = await service.getAllBFAs({})
                 let pendingBFAs = res.data.filter(x => x.paid === true)
                 setPaidBrokerFees(pendingBFAs);
             } catch (error) {
