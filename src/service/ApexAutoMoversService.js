@@ -20,35 +20,35 @@ class ApexAutoMoversService {
     fetchLogin(params, body) {
 
         console.log(params)
-        return this.instance.post('http://git.heroku.com/bfaapi.git/apexautomovers/login', body, params)
+        return this.instance.post('http://bfaapi.herokuapp.com/login', body, params)
     }
 
     postFee(params, body) {
-        return this.instance.post('http://git.heroku.com/bfaapi.git/apexautomovers/create', body, params);
+        return this.instance.post('http://bfaapi.herokuapp.com/create', body, params);
     }
 
     getAllBFAs(params) {
-        return this.instance.get('http://git.heroku.com/bfaapi.git/apexautomovers/pending', params)
+        return this.instance.get('http://bfaapi.herokuapp.com/pending', params)
     }
 
     updateBFA(params, id, body) {
-        return this.instance.put(`http://git.heroku.com/bfaapi.git/apexautomovers/bfaview/${id}`, body, params);
+        return this.instance.put(`http://bfaapi.herokuapp.com/bfaview/${id}`, body, params);
     }
 
     fetchBrokerFee(params, id) {
-        return this.instance.get(`http://git.heroku.com/bfaapi.git/apexautomovers/bfaview/${id}`, params);
+        return this.instance.get(`http://bfaapi.herokuapp.com/bfaview/${id}`, params);
     }
 
     getCarriers(params) {
-        return this.instance.get('http://git.heroku.com/bfaapi.git/apexautomovers/carrier', params);
+        return this.instance.get('http://bfaapi.herokuapp.com/carrier', params);
     }
 
     deleteCarrier(params, id) {
-        return this.instance.delete(`http://git.heroku.com/bfaapi.git/apexautomovers/carrier/${id}`, params);
+        return this.instance.delete(`http://bfaapi.herokuapp.com/carrier/${id}`, params);
     }
 
     createCarrier(params, body) {
-        return this.instance.post('http://git.heroku.com/bfaapi.git/apexautomovers/carrier', body, params);
+        return this.instance.post('http://bfaapi.herokuapp.com/carrier', body, params);
     }
 
     getVehMake(year) {
@@ -60,19 +60,19 @@ class ApexAutoMoversService {
     }
 
     createNewUser(params, body) {
-        return this.instance.post('http://git.heroku.com/bfaapi.git/apexautomovers/admin', body, params)
+        return this.instance.post('http://bfaapi.herokuapp.com/admin', body, params)
     }
 
     getAllUserProfiles(params) {
-        return this.instance.get('http://git.heroku.com/bfaapi.git/apexautomovers/admin/profiles', params);
+        return this.instance.get('http://bfaapi.herokuapp.com/admin/profiles', params);
     }
 
     deleteUserProfile(params, id) {
-        return this.instance.delete(`http://git.heroku.com/bfaapi.git/apexautomovers/admin/${id}`, params);
+        return this.instance.delete(`http://bfaapi.herokuapp.com/admin/${id}`, params);
     }
 
     updateUserProfile(params, id, body) {
-        return this.instance.put(`http://git.heroku.com/bfaapi.git/apexautomovers/admin/${id}`, body, params);
+        return this.instance.put(`http://bfaapi.herokuapp.com/admin/${id}`, body, params);
     }
 }
 
