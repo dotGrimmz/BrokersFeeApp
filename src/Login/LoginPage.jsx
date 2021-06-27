@@ -52,10 +52,10 @@ const LoginPage = props => {
         try {
 
             let res = await service.fetchLogin({
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json",
-                }
+                // headers: {
+                //     "Access-Control-Allow-Origin": "*",
+                //     "Content-Type": "application/json",
+                // }
             }, credentials);
 
 

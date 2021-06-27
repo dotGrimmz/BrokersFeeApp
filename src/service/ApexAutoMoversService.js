@@ -4,7 +4,7 @@ import axios from "axios";
 
 class ApexAutoMoversService {
     constructor(params) {
-        if (params) {
+        if (!params) {
             this.instance = axios.create({
                 timeout: params.timeout ? params.timeout : 10000,
                 headers: params.headers
