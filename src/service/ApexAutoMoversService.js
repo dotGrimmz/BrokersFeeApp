@@ -20,35 +20,35 @@ class ApexAutoMoversService {
     fetchLogin(params, body) {
 
         console.log(params)
-        return this.instance.post('https://bfaapi.herokuapp.com/login', body, params)
+        return this.instance.post('https://bfaapi.herokuapp.com/apexautomovers/login', body, params)
     }
 
     postFee(params, body) {
-        return this.instance.post('https://bfaapi.herokuapp.com/create', body, params);
+        return this.instance.post('https://bfaapi.herokuapp.com/apexautomovers/create', body, params);
     }
 
     getAllBFAs(params) {
-        return this.instance.get('https://bfaapi.herokuapp.com/pending', params)
+        return this.instance.get('https://bfaapi.herokuapp.com/apexautomovers/pending', params)
     }
 
     updateBFA(params, id, body) {
-        return this.instance.put(`https://bfaapi.herokuapp.com/bfaview/${id}`, body, params);
+        return this.instance.put(`https://bfaapi.herokuapp.com/apexautomovers/bfaview/${id}`, body, params);
     }
 
     fetchBrokerFee(params, id) {
-        return this.instance.get(`https://bfaapi.herokuapp.com/bfaview/${id}`, params);
+        return this.instance.get(`https://bfaapi.herokuapp.com/apexautomovers/bfaview/${id}`, params);
     }
 
     getCarriers(params) {
-        return this.instance.get('https://bfaapi.herokuapp.com/carrier', params);
+        return this.instance.get('https://bfaapi.herokuapp.com/apexautomovers/carrier', params);
     }
 
     deleteCarrier(params, id) {
-        return this.instance.delete(`https://bfaapi.herokuapp.com/carrier/${id}`, params);
+        return this.instance.delete(`https://bfaapi.herokuapp.com/apexautomovers/carrier/${id}`, params);
     }
 
     createCarrier(params, body) {
-        return this.instance.post('https://bfaapi.herokuapp.com/carrier', body, params);
+        return this.instance.post('https://bfaapi.herokuapp.com/apexautomovers/carrier', body, params);
     }
 
     getVehMake(year) {
@@ -60,19 +60,19 @@ class ApexAutoMoversService {
     }
 
     createNewUser(params, body) {
-        return this.instance.post('https://bfaapi.herokuapp.com/admin', body, params)
+        return this.instance.post('https://bfaapi.herokuapp.com/apexautomovers/admin', body, params)
     }
 
     getAllUserProfiles(params) {
-        return this.instance.get('https://bfaapi.herokuapp.com/admin/profiles', params);
+        return this.instance.get('https://bfaapi.herokuapp.com/apexautomovers/admin/profiles', params);
     }
 
     deleteUserProfile(params, id) {
-        return this.instance.delete(`https://bfaapi.herokuapp.com/admin/${id}`, params);
+        return this.instance.delete(`https://bfaapi.herokuapp.com/apexautomovers/admin/${id}`, params);
     }
 
     updateUserProfile(params, id, body) {
-        return this.instance.put(`https://bfaapi.herokuapp.com/admin/${id}`, body, params);
+        return this.instance.put(`https://bfaapi.herokuapp.com/apexautomovers/admin/${id}`, body, params);
     }
 }
 
