@@ -71,7 +71,6 @@ const PendingPaymentsTable = () => {
 
     }, []);
 
-    console.log(brokerFees)
 
     const styles = {
         root: {

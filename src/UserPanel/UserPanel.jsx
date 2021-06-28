@@ -12,6 +12,8 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import UserDialog from './UserDialog';
 import AAMContext from '../context/AAMContext';
 import CredentialModal from './CredentialModal.jsx';
+import Pagination from '@material-ui/lab/Pagination';
+
 
 
 
@@ -21,7 +23,8 @@ import CredentialModal from './CredentialModal.jsx';
 const UserPanel = props => {
 
 
-    const { handleValueChange, userName, password, mode, handleAddNewUser, savedUser, handleGeneratePassword, userProfiles, handleDeleteUser, handleUpdateCredentials } = props;
+    const { handleValueChange, userName, password, mode, handleAddNewUser, savedUser,
+        handleGeneratePassword, userProfiles, handleDeleteUser, handleUpdateCredentials } = props;
     const [credentialModal, setCredentialModal] = useState(false);
 
     const context = useContext(AAMContext);
@@ -30,14 +33,19 @@ const UserPanel = props => {
     const [credentials, setCredentials] = useState({
         userName: loggedInUser?.userName || '',
         password: ''
-    })
+    });
+    const [pageNum, setPageNum] = useState(0);
+    let employeesPerPage = 3;
+    let employeeDisplayed = pageNum * employeesPerPage;
+    let pageCount = Math.floor(userProfiles.length / employeesPerPage);
+
+
 
     const handleCredentialChange = e => {
         let obj = { ...credentials, [e.target.name]: e.target.value }
         setCredentials(obj);
     }
-    let firstPage = userProfiles.slice(0, 3);
-    // let secondPage = userProfiles.slice(3, 6)
+
 
 
     const styles = {
@@ -67,13 +75,6 @@ const UserPanel = props => {
         }
     }
 
-    // const handleFoward = () => {
-
-    // }
-
-    // const handleBackwards = () => {
-
-    // }
 
 
 
@@ -101,7 +102,6 @@ const UserPanel = props => {
         )
 
     }
-
 
 
 
@@ -168,15 +168,24 @@ const UserPanel = props => {
                         <Divider />
                     </Grid>
                     <Grid item xs={12} align='row'>
+                        {userProfiles.slice(employeeDisplayed, employeeDisplayed + employeesPerPage).map(profiles => (
 
-                        {firstPage.map(profiles => (
                             <EmployeeTabs key={profiles._id} id={profiles._id} userName={profiles.userName} createdAt={profiles.createdAt} handleDeleteUser={handleDeleteUser} />
                         ))}
 
                     </Grid>
+                    <Grid container justify='center'>
+                        <Pagination
+                            data-cy="pagination"
+                            variant='outlined'
+                            color='primary'
+                            onChange={(e, value) => setPageNum(value)}
+                            defaultPage={1}
+                            page={pageNum}
+                            count={pageCount}
+                        />
+                    </Grid>
 
-
-                    {/* <Pagination count={Math.round(userProfiles.length / 3)} onChange={(e) => console.log(e, 'comes back')} /> */}
                 </Grid>}
                 {mode === 'password' && <Grid container alignItems='center'>
                     <Grid item xs={12} >

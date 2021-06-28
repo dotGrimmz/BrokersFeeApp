@@ -113,6 +113,7 @@ const AdminView = props => {
             try {
                 let res = await service.getAllUserProfiles({})
                 if (res.status === 200) {
+
                     let filtered = res.data.filter(x => loggedInUser.userName !== x.userName)
                     setUserProfiles(filtered)
                 }
