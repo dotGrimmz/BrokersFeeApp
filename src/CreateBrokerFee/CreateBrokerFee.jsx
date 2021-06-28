@@ -77,13 +77,20 @@ const CreateBrokerFee = () => {
     const [selectedCarrierId, setSelectedCarrierId] = useState('');
     const [carrierList, setCarrierList] = useState([]);
 
+    const handleSort = (x, y) => {
+        console.log(x.name, 'this is x', y.name, 'this is y')
+        console.log(x.name - y.name)
+        return x.name - y.name
+    }
 
     useEffect(() => {
         let mounted = true;
         const fetchCarriers = async () => {
             try {
                 let res = await service.getCarriers();
-                if (res.status === 200 && mounted) setCarrierList(res.data);
+                let sorted = await res.data.sort(handleSort)
+                console.log(sorted, 'sorted')
+                if (res.status === 200 && mounted) setCarrierList(res.data.sort((a, b) => a.name - b.name));
             } catch (err) {
                 console.error('could not fetch carriers');
             }
@@ -413,7 +420,7 @@ const CreateBrokerFee = () => {
                                     disableToolbar
                                     autoOk
                                     variant='inline'
-                                    disablePast
+
                                     format="MM/dd/yyyy"
                                     margin="normal"
                                     label="Delivery Date"
