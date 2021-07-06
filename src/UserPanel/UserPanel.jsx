@@ -170,7 +170,12 @@ const UserPanel = props => {
                     <Grid item xs={12} align='row'>
                         {userProfiles.slice(employeeDisplayed, employeeDisplayed + employeesPerPage).map(profiles => (
 
-                            <EmployeeTabs key={profiles._id} id={profiles._id} userName={profiles.userName} createdAt={profiles.createdAt} handleDeleteUser={handleDeleteUser} />
+                            <EmployeeTabs
+                                key={profiles._id}
+                                id={profiles._id}
+                                userName={profiles.userName}
+                                createdAt={profiles.createdAt}
+                                handleDeleteUser={handleDeleteUser} />
                         ))}
 
                     </Grid>

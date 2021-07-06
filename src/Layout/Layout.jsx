@@ -241,7 +241,6 @@ const Layout = (props) => {
             <Container maxWidth='lg' style={styles.content}>
                 {children}
             </Container>
-
         </div >
     )
 }

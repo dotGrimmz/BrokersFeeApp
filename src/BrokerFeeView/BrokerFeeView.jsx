@@ -21,6 +21,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CarrierModal from '../CarrierModal/CarrierModal';
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
+
 
 const service = new ApexAutoMoversService();
 
@@ -31,6 +33,7 @@ const BrokerFeeView = (props) => {
     const { enqueueSnackbar } = useSnackbar();
 
     const theme = useTheme();
+    const history = useHistory();
 
     const medScreen = useMediaQuery(theme.breakpoints.between('xs', 'md'));
 
@@ -241,6 +244,18 @@ const BrokerFeeView = (props) => {
             console.error(err);
             enqueueSnackbar('Failed to  Deleted Broker', { variant: 'error' });
 
+        }
+    }
+
+    const handleDeleteBrokersFee = async (id) => {
+        try {
+            await service.deleteFee(id)
+            enqueueSnackbar('Successfully Deleted Brokers Fee', { variant: 'success' });
+            history.push('/create')
+
+        } catch (err) {
+            console.error(err);
+            enqueueSnackbar('Failed to  Deleted Broker Fee', { variant: 'error' });
         }
     }
 
@@ -516,16 +531,21 @@ const BrokerFeeView = (props) => {
                                     label="Paid"
                                 />
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={12} md={2} align='center' >
                                 <Button variant='contained' color='primary' style={{ 'margin': '2%' }} onClick={handleClickOpen}>
                                     Add Carrier
                                     </Button>
                             </Grid>
-                            <Grid item xs={10} align='center' style={{ 'paddingRight': '15%' }}>
+                            <Grid item xs={12} md={8} align='center' >
                                 <Button disabled={loading} variant='contained' color='primary' onClick={() => handleUpdate()} style={{ 'margin': '2%' }}>
                                     Update Broker Fee
                             </Button>
                                 <CarrierModal open={open} setOpen={setOpen} carrierObj={carrierObj} setCarrierObj={setCarrierObj} addCarrier={addCarrier} handleDeleteCarrier={handleDeleteCarrier} id={carrierObj._id} />
+                            </Grid>
+                            <Grid item xs={12} md={2} align='center' >
+                                <Button variant='contained' color='secondary' style={{ 'margin': '2%' }} onClick={() => handleDeleteBrokersFee(match.params.id)}>
+                                    Delete Broker Fee
+                                    </Button>
                             </Grid>
                         </Grid>
                     </FormControl>

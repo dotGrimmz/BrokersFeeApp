@@ -74,6 +74,10 @@ class ApexAutoMoversService {
     updateUserProfile(params, id, body) {
         return this.instance.put(`https://bfaapi.herokuapp.com/apexautomovers/admin/${id}`, body, params);
     }
+
+    deleteFee(id) {
+        return this.instance.delete(`https://bfaapi.herokuapp.com/apexautomovers/bfaview/${id}`)
+    }
 }
 
 export default ApexAutoMoversService;
